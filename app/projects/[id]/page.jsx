@@ -15,104 +15,80 @@ import {
 } from "react-icons/hi2";
 import { projectsData } from "../data";
 
-function CircuitBorder({ color, duration = 5 }) {
-  const id = color.replace("#", "");
-  return (
-    <svg
-      style={{
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-        overflow: "visible",
-      }}
-    >
-      <defs>
-        <filter id={`glow-${id}`} x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-
-        {/* Comet gradient — bright head, long fading tail */}
-        <linearGradient id={`comet-${id}`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor={color} stopOpacity="0" />
-          <stop offset="50%" stopColor={color} stopOpacity="0.2" />
-          <stop offset="80%" stopColor={color} stopOpacity="0.7" />
-          <stop offset="95%" stopColor={color} stopOpacity="1" />
-          <stop offset="100%" stopColor="white" stopOpacity="1" />
-        </linearGradient>
-      </defs>
-
-      {/* faint full border */}
-      <rect
-        x="1"
-        y="1"
-        rx="20"
-        ry="20"
-        fill="none"
-        stroke={color}
-        strokeWidth="1"
-        strokeOpacity="0.1"
-        style={{ width: "calc(100% - 2px)", height: "calc(100% - 2px)" }}
-      />
-
-      {/* comet — long fading tail, bright head, travels around border */}
-      <rect
-        x="1"
-        y="1"
-        rx="20"
-        ry="20"
-        fill="none"
-        stroke={`url(#comet-${id})`}
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeDasharray="180 9999"
-        filter={`url(#glow-${id})`}
-        style={{
-          width: "calc(100% - 2px)",
-          height: "calc(100% - 2px)",
-          animation: `comet-${id} ${duration}s linear infinite`,
-        }}
-      />
-
-      <style>{`
-        @keyframes comet-${id} {
-          0%   { stroke-dashoffset: 0; }
-          100% { stroke-dashoffset: -2000; }
-        }
-      `}</style>
-    </svg>
-  );
-}
-
 function AnimatedCard({
   color,
-  duration,
+  duration = 5,
   delay = 0,
   children,
   extraStyle = {},
 }) {
+  const id = `cb${color.replace(/[^a-z0-9]/gi, "")}`;
+
+  // Sync all cards to the same point in the cycle regardless of mount time
+  const syncDelay = `-${(Date.now() / 1000) % duration}s`;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay, ease: "easeOut" }}
-      className="glass-card border border-white/10"
       style={{
         borderRadius: "20px",
-        padding: "32px",
-        marginBottom: "24px",
+        padding: "1px",
         position: "relative",
         overflow: "hidden",
+        marginBottom: "24px",
         ...extraStyle,
       }}
     >
-      <CircuitBorder color={color} duration={duration} />
-      {children}
+      {/* Spinning comet — this IS the border */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          width: "300%",
+          height: "300%",
+          background: `conic-gradient(from 0deg,
+            transparent 0%,
+            transparent 62%,
+            ${color}10 66%,
+            ${color}40 73%,
+            ${color}85 82%,
+            ${color}   88%,
+            ${color}25 91%,
+            transparent 92%,
+            transparent 100%
+          )`,
+          animationName: `cspin-${id}`,
+          animationDuration: `${duration}s`,
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
+          animationDelay: syncDelay,
+        }}
+      />
+
+      {/* Inner body — masks center, only the 1px ring shows the gradient above */}
+      <div
+        style={{
+          position: "relative",
+          borderRadius: "19px",
+          padding: "32px",
+          background: "rgba(8, 8, 22, 0.97)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          zIndex: 1,
+        }}
+      >
+        {children}
+      </div>
+
+      <style>{`
+        @keyframes cspin-${id} {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to   { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+      `}</style>
     </motion.div>
   );
 }
@@ -363,7 +339,7 @@ export default function ProjectDetail({ params }) {
         </AnimatedCard>
 
         {/* Challenges */}
-        <AnimatedCard color="#f472b6" duration={6} delay={0.3}>
+        <AnimatedCard color="#f472b6" duration={5} delay={0.2}>
           <SectionHeading
             icon={HiWrenchScrewdriver}
             color="#f472b6"
@@ -426,8 +402,8 @@ export default function ProjectDetail({ params }) {
         {/* Future Plans */}
         <AnimatedCard
           color="#4ade80"
-          duration={7}
-          delay={0.4}
+          duration={5}
+          delay={0.2}
           extraStyle={{ marginBottom: 0 }}
         >
           <SectionHeading
