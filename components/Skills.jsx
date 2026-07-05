@@ -1,5 +1,6 @@
 "use client";
 
+import { useLang } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 import {
   SiExpress,
@@ -18,61 +19,107 @@ import {
   SiVercel,
 } from "react-icons/si";
 
-const skillCategories = [
+const skillData = [
   {
-    title: "Frontend",
-    accent: "#a78bfa",
-    tag: "UI & Interaction",
+    key: "frontend",
+    accent: "#8b5cf6",
     from: "left",
     skills: [
       { name: "HTML5", icon: SiHtml5, color: "#E34F26" },
       { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
       { name: "React", icon: SiReact, color: "#61DAFB" },
-      { name: "Next.js", icon: SiNextdotjs, color: "#ffffff" },
+      { name: "Next.js", icon: SiNextdotjs, color: "#6d28d9" },
       { name: "Tailwind", icon: SiTailwindcss, color: "#38BDF8" },
     ],
   },
   {
-    title: "Backend",
+    key: "backend",
     accent: "#34d399",
-    tag: "Server & Data",
     from: "bottom",
     skills: [
       { name: "Node.js", icon: SiNodedotjs, color: "#68A063" },
-      { name: "Express", icon: SiExpress, color: "#ffffff" },
+      { name: "Express", icon: SiExpress, color: "#6d28d9" },
       { name: "MongoDB", icon: SiMongodb, color: "#4DB33D" },
       { name: "Firebase", icon: SiFirebase, color: "#FFCA28" },
     ],
   },
   {
-    title: "Tools",
+    key: "tools",
     accent: "#fb7185",
-    tag: "Workflow & Deployment",
     from: "right",
     skills: [
       { name: "Git", icon: SiGit, color: "#F05032" },
-      { name: "GitHub", icon: SiGithub, color: "#ffffff" },
-      { name: "Vercel", icon: SiVercel, color: "#ffffff" },
+      { name: "GitHub", icon: SiGithub, color: "#6d28d9" },
+      { name: "Vercel", icon: SiVercel, color: "#6d28d9" },
       { name: "Figma", icon: SiFigma, color: "#F24E1E" },
       { name: "Postman", icon: SiPostman, color: "#FF6C37" },
     ],
   },
 ];
 
-const directionVariants = {
+const dv = {
   left: { hidden: { opacity: 0, x: -80 }, visible: { opacity: 1, x: 0 } },
   right: { hidden: { opacity: 0, x: 80 }, visible: { opacity: 1, x: 0 } },
   bottom: { hidden: { opacity: 0, y: 60 }, visible: { opacity: 1, y: 0 } },
   top: { hidden: { opacity: 0, y: -60 }, visible: { opacity: 1, y: 0 } },
 };
 
+function SkillPill({ skill, delay }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.75 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: false, amount: 0.5 }}
+      transition={{ duration: 0.3, delay, ease: "easeOut" }}
+      whileHover={{ scale: 1.08, y: -3, transition: { duration: 0.15 } }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = "var(--pill-hover-bg)";
+        e.currentTarget.style.borderColor = "var(--pill-hover-border)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = "var(--glass-bg)";
+        e.currentTarget.style.borderColor = "var(--glass-border)";
+      }}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "7px",
+        padding: "7px 13px",
+        borderRadius: "999px",
+        background: "var(--glass-bg)",
+        border: "1px solid var(--glass-border)",
+        cursor: "default",
+        userSelect: "none",
+        transition: "background 0.2s, border-color 0.2s",
+      }}
+    >
+      <skill.icon
+        style={{ color: skill.color, fontSize: "1rem", flexShrink: 0 }}
+      />
+      <span
+        style={{
+          fontFamily: "var(--font-body)",
+          fontSize: "0.85rem",
+          fontWeight: "500",
+          color: "var(--text-subtle)",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {skill.name}
+      </span>
+    </motion.div>
+  );
+}
+
 export default function Skills() {
+  const { t } = useLang();
+
   return (
     <section id="skills" style={{ padding: "80px 20px" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-        {/* Heading — drops in from top */}
+        {/* Heading */}
         <motion.div
-          variants={directionVariants.top}
+          variants={dv.top}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.5 }}
@@ -85,23 +132,23 @@ export default function Skills() {
               fontSize: "0.75rem",
               letterSpacing: "0.15em",
               textTransform: "uppercase",
-              color: "#a78bfa",
+              color: "#8b5cf6",
               display: "block",
               marginBottom: "10px",
             }}
           >
-            What I work with
+            {t.skills.eyebrow}
           </span>
           <h2
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(1.8rem, 4vw, 2.75rem)",
               fontWeight: "700",
-              color: "#fff",
+              color: "var(--text-base)",
               margin: 0,
             }}
           >
-            My{" "}
+            {t.skills.heading}{" "}
             <span
               style={{
                 background: "linear-gradient(135deg, #a78bfa, #34d399)",
@@ -109,12 +156,12 @@ export default function Skills() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Skills
+              {t.skills.headingHighlight}
             </span>
           </h2>
         </motion.div>
 
-        {/* Cards Grid */}
+        {/* Cards */}
         <div
           style={{
             display: "grid",
@@ -122,11 +169,12 @@ export default function Skills() {
             gap: "20px",
           }}
         >
-          {skillCategories.map(
-            ({ title, accent, tag, from, skills }, catIndex) => (
+          {skillData.map(({ key, accent, from, skills }, catIndex) => {
+            const cat = t.skills.categories[key];
+            return (
               <motion.div
-                key={title}
-                variants={directionVariants[from]}
+                key={key}
+                variants={dv[from]}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: false, amount: 0.2 }}
@@ -135,16 +183,26 @@ export default function Skills() {
                   delay: catIndex * 0.08,
                   ease: "easeOut",
                 }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = `${accent}50`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--glass-border)";
+                }}
                 style={{
                   borderRadius: "20px",
                   padding: "28px",
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "var(--glass-bg)",
+                  border: "1px solid var(--glass-border)",
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  boxShadow: "var(--glass-shadow)",
                   position: "relative",
                   overflow: "hidden",
+                  transition: "border-color 0.2s ease",
                 }}
               >
-                {/* Corner glow */}
+                {/* Accent orb */}
                 <div
                   style={{
                     position: "absolute",
@@ -154,12 +212,12 @@ export default function Skills() {
                     height: "120px",
                     borderRadius: "50%",
                     background: accent,
-                    opacity: 0.07,
+                    opacity: 0.08,
                     pointerEvents: "none",
                   }}
                 />
 
-                {/* Header */}
+                {/* Card header */}
                 <div style={{ marginBottom: "20px" }}>
                   <div
                     style={{
@@ -176,18 +234,18 @@ export default function Skills() {
                       marginBottom: "10px",
                     }}
                   >
-                    {tag}
+                    {cat.tag}
                   </div>
                   <h3
                     style={{
                       fontFamily: "var(--font-display)",
                       fontSize: "1.25rem",
                       fontWeight: "700",
-                      color: "#fff",
+                      color: "var(--text-base)",
                       margin: 0,
                     }}
                   >
-                    {title}
+                    {cat.title}
                   </h3>
                 </div>
 
@@ -211,54 +269,10 @@ export default function Skills() {
                   ))}
                 </div>
               </motion.div>
-            ),
-          )}
+            );
+          })}
         </div>
       </div>
     </section>
-  );
-}
-
-function SkillPill({ skill, delay }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.75 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: false, amount: 0.5 }}
-      transition={{ duration: 0.3, delay, ease: "easeOut" }}
-      whileHover={{
-        scale: 1.12,
-        y: -3,
-        background: "rgba(255,255,255,0.12)",
-        borderColor: "rgba(255,255,255,0.25)",
-        transition: { duration: 0.15 },
-      }}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "7px",
-        padding: "7px 13px",
-        borderRadius: "999px",
-        background: "rgba(255,255,255,0.05)",
-        border: "1px solid rgba(255,255,255,0.1)",
-        cursor: "default",
-        userSelect: "none",
-      }}
-    >
-      <skill.icon
-        style={{ color: skill.color, fontSize: "1rem", flexShrink: 0 }}
-      />
-      <span
-        style={{
-          fontFamily: "var(--font-body)",
-          fontSize: "0.85rem",
-          fontWeight: "500",
-          color: "rgba(255,255,255,0.85)",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {skill.name}
-      </span>
-    </motion.div>
   );
 }

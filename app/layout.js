@@ -1,30 +1,29 @@
-import './globals.css';
-import { Providers } from './providers';
+import { LanguageProvider } from "@/context/LanguageContext";
+import { ThemeProvider } from "next-themes";
+import "./globals.css";
 
 export const metadata = {
-  title: 'Farhan Sadiq — Full Stack Developer',
+  title: "Farhan Sadiq — Full Stack Developer",
   description:
-    'Portfolio of Farhan Sadiq, a Full Stack Developer specializing in the MERN stack and Next.js. CSE student at AIUB, Bangladesh.',
-  keywords: ['Farhan Sadiq', 'Full Stack Developer', 'MERN Stack', 'Next.js', 'Portfolio'],
-  authors: [{ name: 'Farhan Sadiq' }],
-  openGraph: {
-    title: 'Farhan Sadiq — Full Stack Developer',
-    description: 'Portfolio of Farhan Sadiq, Full Stack Developer & CSE student at AIUB.',
-    type: 'website',
-  },
+    "Portfolio of Farhan Sadiq, Full Stack Developer & CSE student at AIUB, Bangladesh.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Providers>
-          <div className="bg-orb bg-orb-violet" aria-hidden="true" />
-          <div className="bg-orb bg-orb-cyan" aria-hidden="true" />
-          <div className="relative z-10">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange={false}
+        >
+          <LanguageProvider>
+            <div className="bg-orb bg-orb-violet" />
+            <div className="bg-orb bg-orb-cyan" />
             {children}
-          </div>
-        </Providers>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

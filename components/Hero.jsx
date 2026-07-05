@@ -1,5 +1,6 @@
 "use client";
 
+import { useLang } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
@@ -26,6 +27,8 @@ const socialLinks = [
 
 export default function Hero() {
   const containerRef = useRef(null);
+  const { t } = useLang();
+  const sequence = t.hero.roles.flatMap((role) => [role, 2000]);
 
   return (
     <section
@@ -34,11 +37,12 @@ export default function Hero() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ paddingTop: "80px" }}
     >
+      {/* Grid background */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(139,92,246,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.05) 1px, transparent 1px)",
+            "linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
@@ -47,22 +51,31 @@ export default function Hero() {
         <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
           {/* LEFT */}
           <div className="flex-1 text-center lg:text-left">
+            {/* Available badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full glass-card border border-violet-500/20"
-              style={{ padding: "8px 16px", marginBottom: "24px" }}
+              className="inline-flex items-center gap-2 rounded-full glass-card"
+              style={{
+                padding: "8px 16px",
+                marginBottom: "24px",
+                border: "1px solid rgba(139,92,246,0.25)",
+              }}
             >
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               <span
-                className="text-sm text-white/60"
-                style={{ fontFamily: "var(--font-mono)" }}
+                className="text-sm"
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  color: "var(--text-muted)",
+                }}
               >
-                Available for opportunities
+                {t.hero.available}
               </span>
             </motion.div>
 
+            {/* Name */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -72,12 +85,13 @@ export default function Hero() {
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
                 marginBottom: "16px",
-                display: "block",
+                color: "var(--text-base)",
               }}
             >
-              Hi, I&apos;m <span className="gradient-text">Farhan</span>
+              {t.hero.greeting} <span className="gradient-text">Farhan</span>
             </motion.h1>
 
+            {/* Typewriter */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -90,22 +104,12 @@ export default function Hero() {
                 height: "40px",
               }}
             >
-              <span
-                style={{ color: "rgba(255,255,255,0.4)", marginRight: "8px" }}
-              >
+              <span style={{ color: "var(--text-muted)", marginRight: "8px" }}>
                 &gt;
               </span>
               <TypeAnimation
-                sequence={[
-                  "Full Stack Developer",
-                  2000,
-                  "MERN Stack Developer",
-                  2000,
-                  "Problem Solver",
-                  2000,
-                  "Programmer",
-                  2000,
-                ]}
+                key={sequence.join("")}
+                sequence={sequence}
                 wrapper="span"
                 speed={50}
                 repeat={Infinity}
@@ -118,18 +122,22 @@ export default function Hero() {
               />
             </motion.div>
 
+            {/* Bio */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-white/55 text-lg leading-relaxed max-w-xl mx-auto lg:mx-0"
-              style={{ fontFamily: "var(--font-body)", marginBottom: "32px" }}
+              className="text-lg leading-relaxed max-w-xl mx-auto lg:mx-0"
+              style={{
+                fontFamily: "var(--font-body)",
+                marginBottom: "32px",
+                color: "var(--text-muted)",
+              }}
             >
-              CSE student at AIUB, Bangladesh — building full stack web apps
-              with the MERN stack and Next.js. Passionate about clean code, good
-              UX, and turning ideas into real products.
+              {t.hero.bio}
             </motion.p>
 
+            {/* Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -140,6 +148,17 @@ export default function Hero() {
               <a
                 href="/resume.pdf"
                 download
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.opacity = "0.85";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow =
+                    "0 8px 25px rgba(139,92,246,0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = "1";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
                 style={{
                   background: "linear-gradient(135deg, #8b5cf6, #22d3ee)",
                   fontFamily: "var(--font-body)",
@@ -152,38 +171,55 @@ export default function Hero() {
                   gap: "8px",
                   whiteSpace: "nowrap",
                   textDecoration: "none",
+                  transition: "all 0.2s ease",
                 }}
               >
                 <HiDownload className="w-4 h-4" />
-                Download CV
+                {t.hero.downloadCV}
               </a>
-
               <button
-                onClick={() => {
+                onClick={() =>
                   document
                     .getElementById("contact")
-                    ?.scrollIntoView({ behavior: "smooth" });
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(139,92,246,0.5)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow =
+                    "0 8px 25px rgba(139,92,246,0.15)";
+                  e.currentTarget.style.color = "var(--text-base)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--glass-border)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.color = "var(--text-subtle)";
                 }}
                 style={{
                   fontFamily: "var(--font-body)",
                   padding: "12px 28px",
                   borderRadius: "9999px",
                   fontWeight: "600",
-                  color: "rgba(255,255,255,0.8)",
+                  color: "var(--text-subtle)",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "8px",
                   whiteSpace: "nowrap",
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: "var(--glass-bg)",
+                  border: "1px solid var(--glass-border)",
                   cursor: "pointer",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
+                  transition: "all 0.2s ease",
                 }}
               >
                 <HiEnvelope className="w-4 h-4" />
-                Contact Me
+                {t.hero.contactMe}
               </button>
             </motion.div>
 
+            {/* Social links */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -200,7 +236,6 @@ export default function Hero() {
                   aria-label={label}
                   whileHover={{ scale: 1.15, y: -3 }}
                   whileTap={{ scale: 0.95 }}
-                  className="glass-card border border-white/10 text-white/60 hover:text-white hover:border-violet-500/40 transition-colors duration-200"
                   style={{
                     width: "40px",
                     height: "40px",
@@ -208,6 +243,21 @@ export default function Hero() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
+                    background: "var(--glass-bg)",
+                    border: "1px solid var(--glass-border)",
+                    color: "var(--text-muted)",
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
+                    transition: "all 0.2s ease",
+                    textDecoration: "none",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(139,92,246,0.5)";
+                    e.currentTarget.style.color = "var(--text-base)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "var(--glass-border)";
+                    e.currentTarget.style.color = "var(--text-muted)";
                   }}
                 >
                   <Icon className="w-4 h-4" />
@@ -224,14 +274,16 @@ export default function Hero() {
             className="flex-shrink-0 flex items-center justify-center"
           >
             <div className="relative">
+              {/* Glow ring */}
               <div
-                className="absolute inset-0 rounded-full blur-2xl opacity-40 animate-pulse"
+                className="absolute inset-0 rounded-full blur-2xl opacity-30 animate-pulse"
                 style={{
                   background:
                     "linear-gradient(135deg, rgba(139,92,246,0.6), rgba(34,211,238,0.6))",
-                  transform: "scale(1.1)",
+                  transform: "scale(1.15)",
                 }}
               />
+              {/* Photo */}
               <div
                 className="relative rounded-full overflow-hidden"
                 style={{
@@ -239,7 +291,7 @@ export default function Hero() {
                   height: "clamp(240px, 30vw, 320px)",
                   border: "3px solid transparent",
                   background:
-                    "linear-gradient(#050510, #050510) padding-box, linear-gradient(135deg, #8b5cf6, #22d3ee) border-box",
+                    "linear-gradient(var(--bg-page), var(--bg-page)) padding-box, linear-gradient(135deg, #8b5cf6, #22d3ee) border-box",
                 }}
               >
                 <Image
@@ -254,6 +306,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
+        {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -261,8 +314,12 @@ export default function Hero() {
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         >
           <span
-            className="text-white/30 text-xs tracking-widest uppercase"
-            style={{ fontFamily: "var(--font-mono)" }}
+            className="text-xs tracking-widest uppercase"
+            style={{
+              fontFamily: "var(--font-mono)",
+              color: "var(--text-muted)",
+              opacity: 0.5,
+            }}
           >
             scroll
           </span>
@@ -270,7 +327,10 @@ export default function Hero() {
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           >
-            <HiArrowDown className="w-4 h-4 text-white/30" />
+            <HiArrowDown
+              className="w-4 h-4"
+              style={{ color: "var(--text-muted)", opacity: 0.5 }}
+            />
           </motion.div>
         </motion.div>
       </div>

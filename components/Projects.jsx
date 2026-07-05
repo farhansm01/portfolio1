@@ -1,5 +1,6 @@
 "use client";
 
+import { useLang } from "@/context/LanguageContext";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,14 +8,12 @@ import { useEffect, useRef, useState } from "react";
 import { FaGithub } from "react-icons/fa6";
 import { HiArrowRight, HiArrowTopRightOnSquare } from "react-icons/hi2";
 
-const projects = [
+const projectBase = [
   {
     id: 1,
     number: "01",
+    key: "openshelf",
     name: "OpenShelf",
-    tagline: "Online Book Borrowing Platform",
-    description:
-      "A full stack book borrowing platform where users can browse, borrow, and manage books online. Features Google OAuth, protected routes, and a clean library management system.",
     stack: ["Next.js", "BetterAuth", "MongoDB", "Tailwind", "DaisyUI"],
     live: "https://open-shelf-ten.vercel.app/",
     github: "https://github.com/farhansm01/OpenShelf",
@@ -24,10 +23,8 @@ const projects = [
   {
     id: 2,
     number: "02",
+    key: "dragonnews",
     name: "Dragon News",
-    tagline: "Category-Based News Platform",
-    description:
-      "A news portal with category-based browsing, private routes, and OAuth login. Features a React Marquee ticker, dynamic category sidebar, and smooth authentication flow.",
     stack: ["Next.js", "BetterAuth", "Tailwind", "React Marquee"],
     live: "https://dragon-news-omega-lemon.vercel.app/",
     github: "https://github.com/farhansm01/Dragon-News",
@@ -37,10 +34,8 @@ const projects = [
   {
     id: 3,
     number: "03",
+    key: "bookvibe",
     name: "Book Vibe",
-    tagline: "Smart Book Library App",
-    description:
-      "A book library app with Read List and Wishlist functionality powered by localStorage. Built with React 19, React Router v7, and Recharts for reading analytics.",
     stack: ["React 19", "React Router v7", "Tailwind", "DaisyUI", "Recharts"],
     live: "https://book-vibe-fsm.netlify.app/",
     github: "https://github.com/farhansm01/Book-Vibe",
@@ -50,10 +45,8 @@ const projects = [
   {
     id: 4,
     number: "04",
+    key: "keenkeeper",
     name: "KeenKeeper",
-    tagline: "Relationship Management App",
-    description:
-      "A personal relationship tracker with interaction timeline, analytics dashboard, and friend management. Uses Context API for state and Recharts for visual analytics.",
     stack: ["React", "React Router", "Context API", "Tailwind", "Recharts"],
     live: "https://keen-keeper-fsm.netlify.app/",
     github: "https://github.com/farhansm01/Keen-Keeper",
@@ -63,9 +56,17 @@ const projects = [
 ];
 
 export default function Projects() {
+  const { t } = useLang();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
   const containerRef = useRef(null);
+
+  const projects = projectBase.map((p) => ({
+    ...p,
+    tagline: t.projects.items[p.key].tagline,
+    description: t.projects.items[p.key].description,
+  }));
+  const active = projects[activeIndex];
 
   useEffect(() => {
     const check = () => setIsDesktop(window.innerWidth >= 1024);
@@ -78,21 +79,16 @@ export default function Projects() {
     const handleScroll = () => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      const scrolled = -rect.top;
-      const sectionHeight = rect.height / projects.length;
       const index = Math.min(
-        Math.max(Math.floor(scrolled / sectionHeight), 0),
+        Math.max(Math.floor(-rect.top / (rect.height / projects.length)), 0),
         projects.length - 1,
       );
       setActiveIndex(index);
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const active = projects[activeIndex];
+  }, [projects.length]);
 
   return (
     <section id="projects" style={{ padding: "80px 20px" }}>
@@ -106,7 +102,6 @@ export default function Projects() {
           style={{ textAlign: "center", marginBottom: "80px" }}
         >
           <span
-            className="text-violet-400"
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "0.875rem",
@@ -114,18 +109,21 @@ export default function Projects() {
               textTransform: "uppercase",
               display: "block",
               marginBottom: "12px",
+              color: "#8b5cf6",
             }}
           >
-            What I have built
+            {t.projects.eyebrow}
           </span>
           <h2
-            className="font-bold text-white"
+            className="font-bold"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(2rem, 5vw, 3rem)",
+              color: "var(--text-base)",
             }}
           >
-            Featured <span className="gradient-text">Projects</span>
+            {t.projects.heading}{" "}
+            <span className="gradient-text">{t.projects.headingHighlight}</span>
           </h2>
           <div
             style={{
@@ -138,7 +136,7 @@ export default function Projects() {
           />
         </motion.div>
 
-        {/* Desktop layout */}
+        {/* ── Desktop ── */}
         {isDesktop && (
           <div
             ref={containerRef}
@@ -147,7 +145,6 @@ export default function Projects() {
               height: `${projects.length * 100}vh`,
             }}
           >
-            {/* Sticky UI */}
             <div
               style={{
                 position: "sticky",
@@ -160,11 +157,14 @@ export default function Projects() {
                 zIndex: 1,
               }}
             >
-              {/* LEFT — image card */}
+              {/* Image card */}
               <div style={{ width: "460px", flexShrink: 0 }}>
                 <div
-                  className="glass-card border border-white/10 overflow-hidden"
-                  style={{ borderRadius: "24px" }}
+                  className="glass-card overflow-hidden"
+                  style={{
+                    borderRadius: "24px",
+                    border: "1px solid var(--glass-border)",
+                  }}
                 >
                   <div
                     style={{
@@ -194,7 +194,7 @@ export default function Projects() {
                           style={{
                             position: "absolute",
                             inset: 0,
-                            background: `linear-gradient(to bottom, transparent 40%, ${active.color}30, rgba(5,5,16,0.8))`,
+                            background: `linear-gradient(to bottom, transparent 40%, ${active.color}30, var(--bg-page))`,
                           }}
                         />
                       </motion.div>
@@ -206,12 +206,12 @@ export default function Projects() {
                         left: "16px",
                         fontFamily: "var(--font-mono)",
                         fontSize: "0.75rem",
-                        color: "rgba(255,255,255,0.5)",
-                        background: "rgba(0,0,0,0.4)",
+                        color: "var(--text-muted)",
+                        background: "var(--glass-bg)",
                         backdropFilter: "blur(8px)",
                         padding: "4px 10px",
                         borderRadius: "9999px",
-                        border: "1px solid rgba(255,255,255,0.1)",
+                        border: "1px solid var(--glass-border)",
                       }}
                     >
                       {active.number} / 04
@@ -235,10 +235,11 @@ export default function Projects() {
                           }}
                         >
                           <h3
-                            className="text-white font-bold"
+                            className="font-bold"
                             style={{
                               fontFamily: "var(--font-display)",
                               fontSize: "1.1rem",
+                              color: "var(--text-base)",
                             }}
                           >
                             {active.name}
@@ -254,10 +255,10 @@ export default function Projects() {
                           />
                         </div>
                         <p
-                          className="text-white/50"
                           style={{
                             fontFamily: "var(--font-body)",
                             fontSize: "0.85rem",
+                            color: "var(--text-muted)",
                           }}
                         >
                           {active.tagline}
@@ -267,7 +268,7 @@ export default function Projects() {
                   </div>
                 </div>
 
-                {/* Progress dots */}
+                {/* Dots */}
                 <div
                   style={{
                     display: "flex",
@@ -285,7 +286,7 @@ export default function Projects() {
                         background:
                           i === activeIndex
                             ? active.color
-                            : "rgba(255,255,255,0.15)",
+                            : "var(--glass-border)",
                         width: i === activeIndex ? "24px" : "8px",
                         transition: "all 0.3s ease",
                         boxShadow:
@@ -298,7 +299,7 @@ export default function Projects() {
                 </div>
               </div>
 
-              {/* RIGHT — info panel */}
+              {/* Info panel */}
               <div style={{ flex: 1 }}>
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -321,22 +322,24 @@ export default function Projects() {
                       {active.number}
                     </div>
                     <h3
-                      className="text-white font-bold"
+                      className="font-bold"
                       style={{
                         fontFamily: "var(--font-display)",
                         fontSize: "clamp(2rem, 3vw, 2.8rem)",
                         marginBottom: "16px",
                         lineHeight: 1.1,
+                        color: "var(--text-base)",
                       }}
                     >
                       {active.name}
                     </h3>
                     <p
-                      className="text-white/60 leading-relaxed"
                       style={{
                         fontFamily: "var(--font-body)",
                         fontSize: "1rem",
                         marginBottom: "24px",
+                        color: "var(--text-muted)",
+                        lineHeight: "1.7",
                       }}
                     >
                       {active.description}
@@ -373,6 +376,17 @@ export default function Projects() {
                         href={active.live}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.opacity = "0.85";
+                          e.currentTarget.style.transform = "translateY(-2px)";
+                          e.currentTarget.style.boxShadow =
+                            "0 8px 25px rgba(139,92,246,0.35)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.opacity = "1";
+                          e.currentTarget.style.transform = "translateY(0)";
+                          e.currentTarget.style.boxShadow = "none";
+                        }}
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
@@ -386,52 +400,81 @@ export default function Projects() {
                           fontSize: "0.875rem",
                           fontWeight: "600",
                           textDecoration: "none",
+                          transition: "all 0.2s ease",
                         }}
                       >
                         <HiArrowTopRightOnSquare style={{ fontSize: "1rem" }} />
-                        Live Demo
+                        {t.projects.liveDemo}
                       </a>
 
                       <a
                         href={active.github}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor =
+                            "rgba(139,92,246,0.5)";
+                          e.currentTarget.style.transform = "translateY(-2px)";
+                          e.currentTarget.style.color = "var(--text-base)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor =
+                            "var(--glass-border)";
+                          e.currentTarget.style.transform = "translateY(0)";
+                          e.currentTarget.style.color = "var(--text-subtle)";
+                        }}
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
                           gap: "8px",
                           padding: "10px 20px",
                           borderRadius: "9999px",
-                          background: "rgba(255,255,255,0.05)",
-                          border: "1px solid rgba(255,255,255,0.1)",
-                          color: "rgba(255,255,255,0.8)",
+                          background: "var(--glass-bg)",
+                          border: "1px solid var(--glass-border)",
+                          color: "var(--text-subtle)",
                           fontFamily: "var(--font-body)",
                           fontSize: "0.875rem",
                           fontWeight: "600",
                           textDecoration: "none",
+                          transition: "all 0.2s ease",
+                          backdropFilter: "blur(12px)",
                         }}
                       >
                         <FaGithub style={{ fontSize: "1rem" }} />
-                        GitHub
+                        {t.projects.github}
                       </a>
                       <Link
                         href={`/projects/${active.name.toLowerCase().replace(/\s+/g, "-")}`}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor =
+                            "rgba(139,92,246,0.5)";
+                          e.currentTarget.style.transform = "translateY(-2px)";
+                          e.currentTarget.style.color = "var(--text-base)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor =
+                            "var(--glass-border)";
+                          e.currentTarget.style.transform = "translateY(0)";
+                          e.currentTarget.style.color = "var(--text-subtle)";
+                        }}
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
                           gap: "8px",
                           padding: "10px 20px",
                           borderRadius: "9999px",
-                          background: "rgba(255,255,255,0.05)",
-                          border: "1px solid rgba(255,255,255,0.1)",
-                          color: "rgba(255,255,255,0.8)",
+                          background: "var(--glass-bg)",
+                          border: "1px solid var(--glass-border)",
+                          color: "var(--text-subtle)",
                           fontFamily: "var(--font-body)",
                           fontSize: "0.875rem",
                           fontWeight: "600",
                           textDecoration: "none",
+                          transition: "all 0.2s ease",
+                          backdropFilter: "blur(12px)",
                         }}
                       >
-                        View Details
+                        {t.projects.viewDetails}
                         <HiArrowRight style={{ fontSize: "1rem" }} />
                       </Link>
                     </div>
@@ -442,7 +485,7 @@ export default function Projects() {
           </div>
         )}
 
-        {/* Mobile layout */}
+        {/* ── Mobile ── */}
         {!isDesktop && (
           <div
             style={{ display: "flex", flexDirection: "column", gap: "32px" }}
@@ -454,8 +497,11 @@ export default function Projects() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="glass-card border border-white/10 overflow-hidden"
-                style={{ borderRadius: "24px" }}
+                className="glass-card overflow-hidden"
+                style={{
+                  borderRadius: "24px",
+                  border: "1px solid var(--glass-border)",
+                }}
               >
                 <div
                   style={{
@@ -476,8 +522,7 @@ export default function Projects() {
                     style={{
                       position: "absolute",
                       inset: 0,
-                      background:
-                        "linear-gradient(to bottom, transparent 40%, rgba(5,5,16,0.9))",
+                      background: `linear-gradient(to bottom, transparent 40%, var(--bg-page))`,
                     }}
                   />
                   <div
@@ -487,12 +532,12 @@ export default function Projects() {
                       left: "12px",
                       fontFamily: "var(--font-mono)",
                       fontSize: "0.7rem",
-                      color: "rgba(255,255,255,0.5)",
-                      background: "rgba(0,0,0,0.4)",
+                      color: "var(--text-muted)",
+                      background: "var(--glass-bg)",
                       backdropFilter: "blur(8px)",
                       padding: "3px 8px",
                       borderRadius: "9999px",
-                      border: "1px solid rgba(255,255,255,0.1)",
+                      border: "1px solid var(--glass-border)",
                     }}
                   >
                     {project.number}
@@ -500,21 +545,23 @@ export default function Projects() {
                 </div>
                 <div style={{ padding: "24px" }}>
                   <h3
-                    className="text-white font-bold"
+                    className="font-bold"
                     style={{
                       fontFamily: "var(--font-display)",
                       fontSize: "1.3rem",
                       marginBottom: "8px",
+                      color: "var(--text-base)",
                     }}
                   >
                     {project.name}
                   </h3>
                   <p
-                    className="text-white/55 leading-relaxed"
                     style={{
                       fontFamily: "var(--font-body)",
                       fontSize: "0.9rem",
                       marginBottom: "16px",
+                      color: "var(--text-muted)",
+                      lineHeight: "1.7",
                     }}
                   >
                     {project.description}
@@ -551,6 +598,17 @@ export default function Projects() {
                       href={project.live}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.opacity = "0.85";
+                        e.currentTarget.style.transform = "translateY(-2px)";
+                        e.currentTarget.style.boxShadow =
+                          "0 8px 25px rgba(139,92,246,0.35)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.opacity = "1";
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
                       style={{
                         display: "inline-flex",
                         alignItems: "center",
@@ -563,50 +621,79 @@ export default function Projects() {
                         fontSize: "0.8rem",
                         fontWeight: "600",
                         textDecoration: "none",
+                        transition: "all 0.2s ease",
                       }}
                     >
-                      <HiArrowTopRightOnSquare /> Live
+                      <HiArrowTopRightOnSquare /> {t.projects.liveDemo}
                     </a>
 
                     <a
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor =
+                          "rgba(139,92,246,0.5)";
+                        e.currentTarget.style.transform = "translateY(-2px)";
+                        e.currentTarget.style.color = "var(--text-base)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor =
+                          "var(--glass-border)";
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.color = "var(--text-subtle)";
+                      }}
                       style={{
                         display: "inline-flex",
                         alignItems: "center",
                         gap: "6px",
                         padding: "8px 16px",
                         borderRadius: "9999px",
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        color: "rgba(255,255,255,0.8)",
+                        background: "var(--glass-bg)",
+                        border: "1px solid var(--glass-border)",
+                        color: "var(--text-subtle)",
                         fontFamily: "var(--font-body)",
                         fontSize: "0.8rem",
                         fontWeight: "600",
                         textDecoration: "none",
+                        transition: "all 0.2s ease",
+                        backdropFilter: "blur(12px)",
                       }}
                     >
-                      <FaGithub /> GitHub
+                      <FaGithub /> {t.projects.github}
                     </a>
                     <Link
                       href={`/projects/${project.name.toLowerCase().replace(/\s+/g, "-")}`}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor =
+                          "rgba(139,92,246,0.5)";
+                        e.currentTarget.style.transform = "translateY(-2px)";
+                        e.currentTarget.style.color = "var(--text-base)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor =
+                          "var(--glass-border)";
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.color = "var(--text-subtle)";
+                      }}
                       style={{
                         display: "inline-flex",
                         alignItems: "center",
                         gap: "6px",
                         padding: "8px 16px",
                         borderRadius: "9999px",
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        color: "rgba(255,255,255,0.8)",
+                        background: "var(--glass-bg)",
+                        border: "1px solid var(--glass-border)",
+                        color: "var(--text-subtle)",
                         fontFamily: "var(--font-body)",
                         fontSize: "0.8rem",
                         fontWeight: "600",
                         textDecoration: "none",
+                        transition: "all 0.2s ease",
+                        backdropFilter: "blur(12px)",
                       }}
                     >
-                      Details <HiArrowRight />
+                      {t.projects.viewDetails} <HiArrowRight />
                     </Link>
                   </div>
                 </div>

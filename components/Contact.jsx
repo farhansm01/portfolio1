@@ -1,58 +1,53 @@
 "use client";
 
+import { useLang } from "@/context/LanguageContext";
 import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa6";
 import { HiEnvelope, HiPaperAirplane, HiPhone } from "react-icons/hi2";
 
-const contactInfo = [
-  {
-    icon: HiEnvelope,
-    label: "Email",
-    value: "farhansadiq2021@gmail.com",
-    href: "mailto:farhansadiq2021@gmail.com",
-    color: "#8b5cf6",
-  },
-  {
-    icon: HiPhone,
-    label: "Phone",
-    value: "+880 1888-295969",
-    href: "tel:+8801888295969",
-    color: "#22d3ee",
-  },
-  {
-    icon: FaWhatsapp,
-    label: "WhatsApp",
-    value: "+880 1888-295969",
-    href: "https://wa.me/8801888295969",
-    color: "#4ade80",
-  },
-];
-
 const socialLinks = [
-  {
-    icon: FaGithub,
-    label: "GitHub",
-    href: "https://github.com/farhansm01",
-    color: "#ffffff",
-  },
+  { icon: FaGithub, href: "https://github.com/farhansm01", color: "#6d28d9" },
   {
     icon: FaLinkedin,
-    label: "LinkedIn",
     href: "https://www.linkedin.com/in/farhan-sadiq19/",
     color: "#0ea5e9",
   },
 ];
 
 export default function Contact() {
+  const { t } = useLang();
   const formRef = useRef(null);
-  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [status, setStatus] = useState("idle");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
-  const handleChange = (e) => {
+  const contactInfo = [
+    {
+      icon: HiEnvelope,
+      label: "Email",
+      value: "farhansadiq2021@gmail.com",
+      href: "mailto:farhansadiq2021@gmail.com",
+      color: "#8b5cf6",
+    },
+    {
+      icon: HiPhone,
+      label: "Phone",
+      value: "+880 1888-295969",
+      href: "tel:+8801888295969",
+      color: "#22d3ee",
+    },
+    {
+      icon: FaWhatsapp,
+      label: "WhatsApp",
+      value: "+880 1888-295969",
+      href: "https://wa.me/8801888295969",
+      color: "#4ade80",
+    },
+  ];
+
+  const handleChange = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,6 +71,30 @@ export default function Contact() {
     }
   };
 
+  const inputStyle = {
+    width: "100%",
+    padding: "12px 16px",
+    borderRadius: "12px",
+    background: "var(--input-bg)",
+    border: "1px solid var(--glass-border)",
+    color: "var(--text-base)",
+    fontFamily: "var(--font-body)",
+    fontSize: "0.95rem",
+    outline: "none",
+    boxSizing: "border-box",
+    transition: "border-color 0.2s ease",
+  };
+
+  const labelStyle = {
+    fontFamily: "var(--font-mono)",
+    fontSize: "0.75rem",
+    color: "var(--text-muted)",
+    textTransform: "uppercase",
+    letterSpacing: "0.08em",
+    display: "block",
+    marginBottom: "8px",
+  };
+
   return (
     <section id="contact" style={{ padding: "80px 20px" }}>
       <div style={{ maxWidth: "1152px", margin: "0 auto", width: "100%" }}>
@@ -88,7 +107,6 @@ export default function Contact() {
           style={{ textAlign: "center", marginBottom: "64px" }}
         >
           <span
-            className="text-violet-400"
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "0.875rem",
@@ -96,18 +114,21 @@ export default function Contact() {
               textTransform: "uppercase",
               display: "block",
               marginBottom: "12px",
+              color: "#8b5cf6",
             }}
           >
-            Get In Touch
+            {t.contact.eyebrow}
           </span>
           <h2
-            className="font-bold text-white"
+            className="font-bold"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(2rem, 5vw, 3rem)",
+              color: "var(--text-base)",
             }}
           >
-            Contact <span className="gradient-text">Me</span>
+            {t.contact.heading}{" "}
+            <span className="gradient-text">{t.contact.headingHighlight}</span>
           </h2>
           <div
             style={{
@@ -124,7 +145,7 @@ export default function Contact() {
           className="grid grid-cols-1 lg:grid-cols-2"
           style={{ gap: "48px", alignItems: "start" }}
         >
-          {/* LEFT — contact info */}
+          {/* LEFT */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -134,26 +155,29 @@ export default function Contact() {
           >
             <div>
               <h3
-                className="text-white font-bold"
+                className="font-bold"
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "1.5rem",
                   marginBottom: "12px",
+                  color: "var(--text-base)",
                 }}
               >
-                Let&apos;s work together
+                {t.contact.subtitle}
               </h3>
               <p
-                className="text-white/50 leading-relaxed"
-                style={{ fontFamily: "var(--font-body)", fontSize: "1rem" }}
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "1rem",
+                  color: "var(--text-muted)",
+                  lineHeight: "1.7",
+                }}
               >
-                I&apos;m currently open to new opportunities. Whether you have a
-                project in mind, a question, or just want to say hi — my inbox
-                is always open!
+                {t.contact.body}
               </p>
             </div>
 
-            {/* Contact cards */}
+            {/* Contact info cards */}
             <div
               style={{ display: "flex", flexDirection: "column", gap: "16px" }}
             >
@@ -168,7 +192,15 @@ export default function Contact() {
                   viewport={{ once: false }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   whileHover={{ x: 6 }}
-                  className="glass-card border border-white/10"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = `${item.color}50`;
+                    e.currentTarget.style.boxShadow = `0 4px 20px ${item.color}15`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "var(--glass-border)";
+                    e.currentTarget.style.boxShadow = "var(--glass-shadow)";
+                  }}
+                  className="glass-card"
                   style={{
                     borderRadius: "16px",
                     padding: "16px 20px",
@@ -177,6 +209,8 @@ export default function Contact() {
                     gap: "16px",
                     textDecoration: "none",
                     cursor: "pointer",
+                    border: "1px solid var(--glass-border)",
+                    transition: "border-color 0.2s ease, box-shadow 0.2s ease",
                   }}
                 >
                   <div
@@ -201,7 +235,7 @@ export default function Contact() {
                       style={{
                         fontFamily: "var(--font-mono)",
                         fontSize: "0.7rem",
-                        color: "rgba(255,255,255,0.4)",
+                        color: "var(--text-muted)",
                         textTransform: "uppercase",
                         letterSpacing: "0.08em",
                         marginBottom: "2px",
@@ -210,10 +244,10 @@ export default function Contact() {
                       {item.label}
                     </p>
                     <p
-                      className="text-white"
                       style={{
                         fontFamily: "var(--font-body)",
                         fontSize: "0.95rem",
+                        color: "var(--text-base)",
                       }}
                     >
                       {item.value}
@@ -223,7 +257,7 @@ export default function Contact() {
               ))}
             </div>
 
-            {/* Social links */}
+            {/* Social icons */}
             <div style={{ display: "flex", gap: "12px" }}>
               {socialLinks.map((s, i) => (
                 <motion.a
@@ -232,16 +266,24 @@ export default function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ y: -4, scale: 1.1 }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(139,92,246,0.5)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "var(--glass-border)";
+                  }}
                   style={{
                     width: "44px",
                     height: "44px",
                     borderRadius: "12px",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.1)",
+                    background: "var(--glass-bg)",
+                    border: "1px solid var(--glass-border)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     textDecoration: "none",
+                    transition: "border-color 0.2s ease",
+                    backdropFilter: "blur(12px)",
                   }}
                 >
                   <s.icon style={{ color: s.color, fontSize: "1.2rem" }} />
@@ -256,10 +298,15 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.7 }}
-            className="glass-card border border-white/10"
-            style={{ borderRadius: "24px", padding: "36px" }}
+            className="glass-card"
+            style={{
+              borderRadius: "24px",
+              padding: "36px",
+              position: "relative",
+              border: "1px solid var(--glass-border)",
+            }}
           >
-            {/* Top accent */}
+            {/* Top accent line */}
             <div
               style={{
                 position: "absolute",
@@ -274,14 +321,15 @@ export default function Contact() {
             />
 
             <h3
-              className="text-white font-bold"
+              className="font-bold"
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "1.3rem",
                 marginBottom: "24px",
+                color: "var(--text-base)",
               }}
             >
-              Send a Message
+              {t.contact.form.send}
             </h3>
 
             <form
@@ -289,141 +337,68 @@ export default function Contact() {
               onSubmit={handleSubmit}
               style={{ display: "flex", flexDirection: "column", gap: "20px" }}
             >
-              {/* Name */}
               <div>
-                <label
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.75rem",
-                    color: "rgba(255,255,255,0.5)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
-                    display: "block",
-                    marginBottom: "8px",
-                  }}
-                >
-                  Name
-                </label>
+                <label style={labelStyle}>{t.contact.form.nameLabel}</label>
                 <input
                   type="text"
                   name="name"
                   value={form.name}
                   onChange={handleChange}
                   required
-                  placeholder="Your name"
-                  style={{
-                    width: "100%",
-                    padding: "12px 16px",
-                    borderRadius: "12px",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    color: "white",
-                    fontFamily: "var(--font-body)",
-                    fontSize: "0.95rem",
-                    outline: "none",
-                    boxSizing: "border-box",
-                  }}
+                  placeholder={t.contact.form.namePlaceholder}
+                  style={inputStyle}
                   onFocus={(e) =>
-                    (e.target.style.border = "1px solid rgba(139,92,246,0.5)")
+                    (e.target.style.borderColor = "rgba(139,92,246,0.6)")
                   }
                   onBlur={(e) =>
-                    (e.target.style.border = "1px solid rgba(255,255,255,0.1)")
+                    (e.target.style.borderColor = "var(--glass-border)")
                   }
                 />
               </div>
-
-              {/* Email */}
               <div>
-                <label
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.75rem",
-                    color: "rgba(255,255,255,0.5)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
-                    display: "block",
-                    marginBottom: "8px",
-                  }}
-                >
-                  Email
-                </label>
+                <label style={labelStyle}>{t.contact.form.emailLabel}</label>
                 <input
                   type="email"
                   name="email"
                   value={form.email}
                   onChange={handleChange}
                   required
-                  placeholder="your@email.com"
-                  style={{
-                    width: "100%",
-                    padding: "12px 16px",
-                    borderRadius: "12px",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    color: "white",
-                    fontFamily: "var(--font-body)",
-                    fontSize: "0.95rem",
-                    outline: "none",
-                    boxSizing: "border-box",
-                  }}
+                  placeholder={t.contact.form.emailPlaceholder}
+                  style={inputStyle}
                   onFocus={(e) =>
-                    (e.target.style.border = "1px solid rgba(139,92,246,0.5)")
+                    (e.target.style.borderColor = "rgba(139,92,246,0.6)")
                   }
                   onBlur={(e) =>
-                    (e.target.style.border = "1px solid rgba(255,255,255,0.1)")
+                    (e.target.style.borderColor = "var(--glass-border)")
                   }
                 />
               </div>
-
-              {/* Message */}
               <div>
-                <label
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.75rem",
-                    color: "rgba(255,255,255,0.5)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
-                    display: "block",
-                    marginBottom: "8px",
-                  }}
-                >
-                  Message
-                </label>
+                <label style={labelStyle}>{t.contact.form.messageLabel}</label>
                 <textarea
                   name="message"
                   value={form.message}
                   onChange={handleChange}
                   required
-                  placeholder="What's on your mind?"
+                  placeholder={t.contact.form.messagePlaceholder}
                   rows={5}
-                  style={{
-                    width: "100%",
-                    padding: "12px 16px",
-                    borderRadius: "12px",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    color: "white",
-                    fontFamily: "var(--font-body)",
-                    fontSize: "0.95rem",
-                    outline: "none",
-                    resize: "vertical",
-                    boxSizing: "border-box",
-                  }}
+                  style={{ ...inputStyle, resize: "vertical" }}
                   onFocus={(e) =>
-                    (e.target.style.border = "1px solid rgba(139,92,246,0.5)")
+                    (e.target.style.borderColor = "rgba(139,92,246,0.6)")
                   }
                   onBlur={(e) =>
-                    (e.target.style.border = "1px solid rgba(255,255,255,0.1)")
+                    (e.target.style.borderColor = "var(--glass-border)")
                   }
                 />
               </div>
 
-              {/* Submit */}
               <motion.button
                 type="submit"
                 disabled={status === "sending"}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: "0 8px 25px rgba(139,92,246,0.35)",
+                }}
                 whileTap={{ scale: 0.98 }}
                 style={{
                   width: "100%",
@@ -443,13 +418,15 @@ export default function Contact() {
                   alignItems: "center",
                   justifyContent: "center",
                   gap: "8px",
+                  transition: "all 0.2s ease",
                 }}
               >
                 <HiPaperAirplane style={{ fontSize: "1.1rem" }} />
-                {status === "sending" ? "Sending..." : "Send Message"}
+                {status === "sending"
+                  ? t.contact.form.sending
+                  : t.contact.form.send}
               </motion.button>
 
-              {/* Status messages */}
               {status === "success" && (
                 <motion.p
                   initial={{ opacity: 0, y: 8 }}
@@ -461,7 +438,7 @@ export default function Contact() {
                     fontSize: "0.9rem",
                   }}
                 >
-                  ✓ Message sent! I&apos;ll get back to you soon.
+                  {t.contact.form.success}
                 </motion.p>
               )}
               {status === "error" && (
@@ -475,7 +452,7 @@ export default function Contact() {
                     fontSize: "0.9rem",
                   }}
                 >
-                  ✕ Something went wrong. Please try again.
+                  {t.contact.form.error}
                 </motion.p>
               )}
             </form>

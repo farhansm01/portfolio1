@@ -31,12 +31,16 @@ export default function EducationCard({ item, index, total, scrollYProgress }) {
         scale,
         borderRadius: "24px",
         padding: "32px",
-        border: "1px solid rgba(255,255,255,0.1)",
+        border: "1px solid var(--glass-border)",
         position: "relative",
         overflow: "hidden",
+        background: "var(--glass-bg)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        boxShadow: "var(--glass-shadow)",
       }}
-      className="glass-card"
     >
+      {/* Accent top line */}
       <motion.div
         style={{
           position: "absolute",
@@ -84,11 +88,12 @@ export default function EducationCard({ item, index, total, scrollYProgress }) {
             </span>
           </div>
           <h3
-            className="text-white font-bold"
+            className="font-bold"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "1.15rem",
               marginBottom: "4px",
+              color: "var(--text-base)",
             }}
           >
             {item.title}
@@ -149,11 +154,14 @@ export default function EducationCard({ item, index, total, scrollYProgress }) {
       >
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <HiCalendar
-            style={{ color: "rgba(255,255,255,0.4)", fontSize: "1rem" }}
+            style={{ color: "var(--text-muted)", fontSize: "1rem" }}
           />
           <span
-            className="text-white/50"
-            style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem" }}
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "0.875rem",
+              color: "var(--text-muted)",
+            }}
           >
             {item.period}
           </span>
@@ -161,11 +169,14 @@ export default function EducationCard({ item, index, total, scrollYProgress }) {
         {item.location && (
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <HiLocationMarker
-              style={{ color: "rgba(255,255,255,0.4)", fontSize: "1rem" }}
+              style={{ color: "var(--text-muted)", fontSize: "1rem" }}
             />
             <span
-              className="text-white/50"
-              style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem" }}
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "0.875rem",
+                color: "var(--text-muted)",
+              }}
             >
               {item.location}
             </span>
@@ -178,13 +189,17 @@ export default function EducationCard({ item, index, total, scrollYProgress }) {
           <div
             style={{
               height: "1px",
-              background: "rgba(255,255,255,0.06)",
+              background: "var(--glass-border)",
               marginBottom: "16px",
             }}
           />
           <p
-            className="text-white/50 leading-relaxed"
-            style={{ fontFamily: "var(--font-body)", fontSize: "0.9rem" }}
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "0.9rem",
+              color: "var(--text-muted)",
+              lineHeight: "1.7",
+            }}
           >
             {item.description}
           </p>
@@ -200,8 +215,8 @@ export default function EducationCard({ item, index, total, scrollYProgress }) {
                 width: "32px",
                 height: "32px",
                 borderRadius: "8px",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                background: "var(--glass-bg)",
+                border: "1px solid var(--glass-border)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

@@ -2,18 +2,88 @@
 
 @import "tailwindcss";
 
+/* ── Light theme (default) ──────────────────────────────── */
 :root {
+  --pill-hover-bg: rgba(139, 92, 246, 0.12);
+  --pill-hover-border: rgba(139, 92, 246, 0.35);
+  --grid-line: rgba(139, 92, 246, 0.06);
   --font-display: "Syne", sans-serif;
   --font-body: "DM Sans", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
-  --glass-bg: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --glass-bg: rgba(109, 40, 217, 0.1);
+  --glass-border: rgba(109, 40, 217, 0.25);
+  --glass-shadow: 0 4px 16px rgba(109, 40, 217, 0.1);
   --gradient-primary: linear-gradient(135deg, #8b5cf6, #22d3ee);
   --gradient-glow-violet: rgba(139, 92, 246, 0.3);
   --gradient-glow-cyan: rgba(34, 211, 238, 0.3);
+  --bg-page: #eef0f9;
+  --bg-gradient: linear-gradient(135deg, #ede9fe 0%, #e0f2fe 50%, #f0e9ff 100%);
+  --text-base: #1a1a2e;
+  --text-muted: rgba(26, 26, 46, 0.5);
+  --text-subtle: rgba(26, 26, 46, 0.7);
+  --nav-active-bg: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.15),
+    rgba(34, 211, 238, 0.15)
+  );
+  --nav-active-border: rgba(139, 92, 246, 0.3);
+  --navbar-bg: rgba(244, 244, 251, 0.8);
+  --navbar-shadow:
+    0 8px 32px rgba(139, 92, 246, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --scrollbar-track: #e8e8f4;
+  --noise-opacity: 0.15;
+  --card-bg: #ffffff;
+  --input-bg: rgba(255, 255, 255, 0.6);
+  --orb-violet: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.18) 0%,
+    transparent 70%
+  );
+  --orb-cyan: radial-gradient(
+    circle,
+    rgba(34, 211, 238, 0.15) 0%,
+    transparent 70%
+  );
 }
 
+/* ── Dark theme ─────────────────────────────────────────── */
+html.dark {
+  --pill-hover-bg: rgba(255, 255, 255, 0.12);
+  --pill-hover-border: rgba(255, 255, 255, 0.25);
+  --grid-line: rgba(139, 92, 246, 0.05);
+  --bg-gradient: none;
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --bg-page: #050510;
+  --text-base: #e2e8f0;
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --text-subtle: rgba(255, 255, 255, 0.7);
+  --nav-active-bg: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.25),
+    rgba(34, 211, 238, 0.25)
+  );
+  --nav-active-border: rgba(139, 92, 246, 0.3);
+  --navbar-bg: rgba(5, 5, 16, 0.8);
+  --navbar-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --scrollbar-track: #0a0a1a;
+  --noise-opacity: 0.4;
+  --card-bg: rgba(8, 8, 22, 0.97);
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --orb-violet: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.12) 0%,
+    transparent 70%
+  );
+  --orb-cyan: radial-gradient(
+    circle,
+    rgba(34, 211, 238, 0.1) 0%,
+    transparent 70%
+  );
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
 * {
   margin: 0;
   padding: 0;
@@ -26,11 +96,17 @@ html {
 
 body {
   font-family: var(--font-body);
-  background-color: #050510;
-  color: #e2e8f0;
+  background-color: var(--bg-page);
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-base);
   overflow-x: hidden;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
 }
 
+/* ── Utilities ──────────────────────────────────────────── */
 .glass-card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -55,18 +131,18 @@ body {
     padding: 7rem 2rem;
   }
 }
-
 @media (min-width: 1280px) {
   .section-padding {
     padding: 8rem 2rem;
   }
 }
 
+/* ── Scrollbar ──────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0a1a;
+  background: var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(#8b5cf6, #22d3ee);
@@ -78,6 +154,7 @@ body {
   color: #fff;
 }
 
+/* ── Noise overlay ──────────────────────────────────────── */
 body::before {
   content: "";
   position: fixed;
@@ -85,9 +162,11 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 0;
-  opacity: 0.4;
+  opacity: var(--noise-opacity);
+  transition: opacity 0.4s ease;
 }
 
+/* ── Background orbs ────────────────────────────────────── */
 .bg-orb {
   position: fixed;
   border-radius: 50%;
@@ -99,11 +178,7 @@ body::before {
 .bg-orb-violet {
   width: 600px;
   height: 600px;
-  background: radial-gradient(
-    circle,
-    rgba(139, 92, 246, 0.12) 0%,
-    transparent 70%
-  );
+  background: var(--orb-violet);
   top: -200px;
   left: -200px;
   animation: float 12s ease-in-out infinite;
@@ -112,11 +187,7 @@ body::before {
 .bg-orb-cyan {
   width: 500px;
   height: 500px;
-  background: radial-gradient(
-    circle,
-    rgba(34, 211, 238, 0.1) 0%,
-    transparent 70%
-  );
+  background: var(--orb-cyan);
   bottom: -150px;
   right: -150px;
   animation: float 15s ease-in-out infinite reverse;
@@ -132,6 +203,14 @@ body::before {
   }
 }
 
+/* Fix hero photo border in light mode */
+html:not(.dark) .hero-photo-border {
+  background:
+    linear-gradient(var(--bg-page), var(--bg-page)) padding-box,
+    linear-gradient(135deg, #8b5cf6, #22d3ee) border-box;
+}
+
+/* ── Lenis ──────────────────────────────────────────────── */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -146,4 +225,10 @@ html.lenis body {
 html,
 body {
   overflow-x: clip;
+}
+
+/* ── Light mode glass stronger contrast ─────────────────── */
+html:not(.dark) .glass-card {
+  background: rgba(109, 40, 217, 0.08) !important;
+  border-color: rgba(109, 40, 217, 0.22) !important;
 }

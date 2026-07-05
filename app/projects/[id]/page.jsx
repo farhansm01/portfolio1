@@ -1,5 +1,6 @@
 "use client";
 
+import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,8 +24,6 @@ function AnimatedCard({
   extraStyle = {},
 }) {
   const id = `cb${color.replace(/[^a-z0-9]/gi, "")}`;
-
-  // Sync all cards to the same point in the cycle regardless of mount time
   const syncDelay = `-${(Date.now() / 1000) % duration}s`;
 
   return (
@@ -38,10 +37,11 @@ function AnimatedCard({
         position: "relative",
         overflow: "hidden",
         marginBottom: "24px",
+        background: "rgba(139, 92, 246, 0.08)",
         ...extraStyle,
       }}
     >
-      {/* Spinning comet — this IS the border */}
+      {/* Spinning comet border */}
       <div
         style={{
           position: "absolute",
@@ -68,16 +68,18 @@ function AnimatedCard({
         }}
       />
 
-      {/* Inner body — masks center, only the 1px ring shows the gradient above */}
+      {/* Inner card */}
       <div
         style={{
           position: "relative",
           borderRadius: "19px",
           padding: "32px",
-          background: "rgba(8, 8, 22, 0.97)",
+          background: "var(--card-bg)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
           zIndex: 1,
+          boxShadow:
+            "0 8px 32px rgba(109, 40, 217, 0.12), 0 2px 8px rgba(0,0,0,0.06)",
         }}
       >
         {children}
@@ -106,8 +108,12 @@ function SectionHeading({ icon: Icon, color, label }) {
     >
       <Icon style={{ color, fontSize: "1.2rem" }} />
       <h2
-        className="text-white font-bold"
-        style={{ fontFamily: "var(--font-display)", fontSize: "1.2rem" }}
+        className="font-bold"
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "1.2rem",
+          color: "var(--text-base)",
+        }}
       >
         {label}
       </h2>
@@ -125,9 +131,10 @@ export default function ProjectDetail({ params }) {
       style={{
         minHeight: "100vh",
         padding: "120px 20px 80px",
-        background: "var(--bg, #05050f)",
+        background: "var(--bg-page)",
       }}
     >
+      <Navbar />
       <div style={{ maxWidth: "900px", margin: "0 auto", width: "100%" }}>
         {/* Back */}
         <motion.div
@@ -138,20 +145,22 @@ export default function ProjectDetail({ params }) {
         >
           <Link
             href="/#projects"
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.color = "var(--text-base)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.color = "var(--text-muted)")
+            }
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
-              color: "rgba(255,255,255,0.5)",
+              color: "var(--text-muted)",
               fontFamily: "var(--font-body)",
               fontSize: "0.9rem",
               textDecoration: "none",
               transition: "color 0.2s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "rgba(255,255,255,0.5)")
-            }
           >
             <HiArrowLeft /> Back to Projects
           </Link>
@@ -179,22 +188,23 @@ export default function ProjectDetail({ params }) {
             {project.number} / 04
           </motion.div>
           <h1
-            className="text-white font-bold"
+            className="font-bold"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(2rem, 5vw, 3.5rem)",
               marginBottom: "12px",
               lineHeight: 1.1,
+              color: "var(--text-base)",
             }}
           >
             {project.name}
           </h1>
           <p
-            className="text-white/50"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "1.1rem",
               marginBottom: "24px",
+              color: "var(--text-muted)",
             }}
           >
             {project.tagline}
@@ -234,8 +244,12 @@ export default function ProjectDetail({ params }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="glass-card border border-white/10 overflow-hidden"
-          style={{ borderRadius: "24px", marginBottom: "40px" }}
+          className="glass-card overflow-hidden"
+          style={{
+            borderRadius: "24px",
+            marginBottom: "40px",
+            border: "1px solid var(--glass-border)",
+          }}
         >
           <div
             style={{
@@ -256,7 +270,7 @@ export default function ProjectDetail({ params }) {
               style={{
                 position: "absolute",
                 inset: 0,
-                background: `linear-gradient(to bottom, transparent 50%, ${project.color}20, rgba(5,5,16,0.6))`,
+                background: `linear-gradient(to bottom, transparent 50%, ${project.color}20, var(--bg-page))`,
               }}
             />
           </div>
@@ -279,6 +293,17 @@ export default function ProjectDetail({ params }) {
             href={project.live}
             target="_blank"
             rel="noopener noreferrer"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = "0.85";
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow =
+                "0 8px 25px rgba(139,92,246,0.35)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = "1";
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -291,6 +316,7 @@ export default function ProjectDetail({ params }) {
               fontSize: "0.95rem",
               fontWeight: "600",
               textDecoration: "none",
+              transition: "all 0.2s ease",
             }}
           >
             <HiArrowTopRightOnSquare /> Live Demo
@@ -300,19 +326,31 @@ export default function ProjectDetail({ params }) {
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "rgba(139,92,246,0.5)";
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.color = "var(--text-base)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--glass-border)";
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.color = "var(--text-subtle)";
+            }}
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
               padding: "12px 24px",
               borderRadius: "9999px",
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              color: "rgba(255,255,255,0.8)",
+              background: "var(--glass-bg)",
+              border: "1px solid var(--glass-border)",
+              color: "var(--text-subtle)",
               fontFamily: "var(--font-body)",
               fontSize: "0.95rem",
               fontWeight: "600",
               textDecoration: "none",
+              backdropFilter: "blur(12px)",
+              transition: "all 0.2s ease",
             }}
           >
             <FaGithub /> GitHub
@@ -327,11 +365,12 @@ export default function ProjectDetail({ params }) {
             label="About the Project"
           />
           <p
-            className="text-white/60 leading-relaxed"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "1rem",
               textAlign: "center",
+              color: "var(--text-muted)",
+              lineHeight: "1.7",
             }}
           >
             {project.description}
@@ -385,11 +424,12 @@ export default function ProjectDetail({ params }) {
                   </span>
                 </div>
                 <p
-                  className="text-white/60 leading-relaxed"
                   style={{
                     fontFamily: "var(--font-body)",
                     fontSize: "0.95rem",
                     flex: 1,
+                    color: "var(--text-muted)",
+                    lineHeight: "1.7",
                   }}
                 >
                   {challenge}
@@ -435,11 +475,12 @@ export default function ProjectDetail({ params }) {
                   }}
                 />
                 <p
-                  className="text-white/60 leading-relaxed"
                   style={{
                     fontFamily: "var(--font-body)",
                     fontSize: "0.95rem",
                     flex: 1,
+                    color: "var(--text-muted)",
+                    lineHeight: "1.7",
                   }}
                 >
                   {plan}

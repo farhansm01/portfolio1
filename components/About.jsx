@@ -1,5 +1,6 @@
 "use client";
 
+import { useLang } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 import { HiCode } from "react-icons/hi";
 import { HiAcademicCap, HiHeart } from "react-icons/hi2";
@@ -14,45 +15,20 @@ import {
 
 const techStack = [
   { icon: SiReact, name: "React", color: "#61DAFB" },
-  { icon: SiNextdotjs, name: "Next.js", color: "#ffffff" },
+  { icon: SiNextdotjs, name: "Next.js", color: "#6d28d9" },
   { icon: SiNodedotjs, name: "Node.js", color: "#68A063" },
-  { icon: SiExpress, name: "Express", color: "#ffffff" },
+  { icon: SiExpress, name: "Express", color: "#6d28d9" },
   { icon: SiMongodb, name: "MongoDB", color: "#4DB33D" },
   { icon: SiTailwindcss, name: "Tailwind", color: "#38BDF8" },
 ];
 
-const stats = [
-  { label: "University", value: "AIUB, Bangladesh" },
-  { label: "Degree", value: "B.Sc. in Computer Science" },
-  { label: "Stack", value: "MERN + Next.js" },
-  { label: "Status", value: "Open to Opportunities" },
+const cardMeta = [
+  { key: "journey", icon: HiCode, color: "#8b5cf6", from: "left" },
+  { key: "mindset", icon: HiAcademicCap, color: "#22d3ee", from: "bottom" },
+  { key: "beyond", icon: HiHeart, color: "#f472b6", from: "right" },
 ];
 
-const cards = [
-  {
-    icon: HiCode,
-    title: "The Journey",
-    color: "#8b5cf6",
-    from: "left",
-    text: "Started in 2020 with HTML and CSS. Kept pushing — JavaScript, React, now full MERN stack. The path was not straight but every restart taught me something the first attempt could not.",
-  },
-  {
-    icon: HiAcademicCap,
-    title: "The Mindset",
-    color: "#22d3ee",
-    from: "bottom",
-    text: "I am drawn to problems worth solving. I consume business content, study how products grow, and think about impact before implementation. Code is the tool — the idea is the real work.",
-  },
-  {
-    icon: HiHeart,
-    title: "Beyond Code",
-    color: "#f472b6",
-    from: "right",
-    text: "History documentaries, business rabbit holes, and asking why did this succeed? I am fascinated by how things — companies, ideas, movements — go from zero to something real.",
-  },
-];
-
-const directionVariants = {
+const dv = {
   left: { hidden: { opacity: 0, x: -80 }, visible: { opacity: 1, x: 0 } },
   right: { hidden: { opacity: 0, x: 80 }, visible: { opacity: 1, x: 0 } },
   bottom: { hidden: { opacity: 0, y: 60 }, visible: { opacity: 1, y: 0 } },
@@ -61,12 +37,21 @@ const directionVariants = {
 };
 
 export default function About() {
+  const { t } = useLang();
+
+  const stats = [
+    { label: t.about.stats.universityLabel, value: t.about.stats.university },
+    { label: t.about.stats.degreeLabel, value: t.about.stats.degree },
+    { label: t.about.stats.stackLabel, value: t.about.stats.stack },
+    { label: t.about.stats.statusLabel, value: t.about.stats.status },
+  ];
+
   return (
     <section id="about" style={{ padding: "80px 20px" }}>
       <div style={{ maxWidth: "1152px", margin: "0 auto", width: "100%" }}>
-        {/* Heading — drops from top */}
+        {/* Heading */}
         <motion.div
-          variants={directionVariants.top}
+          variants={dv.top}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.5 }}
@@ -74,7 +59,6 @@ export default function About() {
           style={{ textAlign: "center", marginBottom: "56px" }}
         >
           <span
-            className="text-violet-400"
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "0.875rem",
@@ -82,18 +66,21 @@ export default function About() {
               textTransform: "uppercase",
               display: "block",
               marginBottom: "12px",
+              color: "#8b5cf6",
             }}
           >
-            Get to know me
+            {t.about.eyebrow}
           </span>
           <h2
-            className="font-bold text-white"
+            className="font-bold"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(2rem, 5vw, 3rem)",
+              color: "var(--text-base)",
             }}
           >
-            About <span className="gradient-text">Me</span>
+            {t.about.heading}{" "}
+            <span className="gradient-text">{t.about.headingHighlight}</span>
           </h2>
           <div
             style={{
@@ -106,9 +93,9 @@ export default function About() {
           />
         </motion.div>
 
-        {/* Bio — fades up */}
+        {/* Bio */}
         <motion.div
-          variants={directionVariants.fadeUp}
+          variants={dv.fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.4 }}
@@ -120,34 +107,29 @@ export default function About() {
           }}
         >
           <p
-            className="text-white/70 leading-relaxed"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "1.1rem",
               marginBottom: "18px",
+              color: "var(--text-muted)",
+              lineHeight: "1.8",
             }}
           >
-            I&apos;m{" "}
-            <span className="text-white font-semibold">Farhan Sadiq</span> — a
-            Full Stack Developer and CSE student at{" "}
-            <span className="text-violet-400 font-medium">
-              AIUB, Bangladesh
-            </span>
-            . I build web applications with the MERN stack and Next.js, with a
-            focus on clean architecture, real usability, and solutions that
-            create actual value.
+            {t.about.bio1}
           </p>
           <p
-            className="text-white/70 leading-relaxed"
-            style={{ fontFamily: "var(--font-body)", fontSize: "1.1rem" }}
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "1.1rem",
+              color: "var(--text-muted)",
+              lineHeight: "1.8",
+            }}
           >
-            I am interested in how technology and ideas come together to build
-            products people rely on — and I enjoy creating visually polished
-            interfaces that turn concepts into real interactive experiences.
+            {t.about.bio2}
           </p>
         </motion.div>
 
-        {/* Stats — each tile slides from bottom with stagger */}
+        {/* Stats */}
         <div
           className="grid grid-cols-2 md:grid-cols-4"
           style={{ gap: "16px", marginBottom: "56px" }}
@@ -155,34 +137,39 @@ export default function About() {
           {stats.map(({ label, value }, i) => (
             <motion.div
               key={label}
-              variants={directionVariants.fadeUp}
+              variants={dv.fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: false, amount: 0.4 }}
               transition={{ duration: 0.45, delay: i * 0.08, ease: "easeOut" }}
               whileHover={{ y: -4, transition: { duration: 0.15 } }}
-              className="glass-card border border-white/10"
+              className="glass-card"
               style={{
                 borderRadius: "16px",
                 padding: "20px 16px",
                 textAlign: "center",
+                border: "1px solid var(--glass-border)",
               }}
             >
               <p
-                className="text-white/40"
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: "0.7rem",
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
                   marginBottom: "8px",
+                  color: "var(--text-muted)",
                 }}
               >
                 {label}
               </p>
               <p
-                className="text-white font-semibold"
-                style={{ fontFamily: "var(--font-body)", fontSize: "0.9rem" }}
+                className="font-semibold"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "0.9rem",
+                  color: "var(--text-base)",
+                }}
               >
                 {value}
               </p>
@@ -190,68 +177,90 @@ export default function About() {
           ))}
         </div>
 
-        {/* 3 Cards — left / bottom / right */}
+        {/* Cards */}
         <div
           className="grid grid-cols-1 md:grid-cols-3"
           style={{ gap: "24px", marginBottom: "56px" }}
         >
-          {cards.map(({ icon: Icon, title, color, from, text }, i) => (
-            <motion.div
-              key={title}
-              variants={directionVariants[from]}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
-              transition={{ duration: 0.55, delay: i * 0.08, ease: "easeOut" }}
-              whileHover={{ y: -6, transition: { duration: 0.15 } }}
-              className="glass-card border border-white/10 hover:border-white/20 transition-all duration-300 relative overflow-hidden group"
-              style={{ borderRadius: "24px", padding: "28px" }}
-            >
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          {cardMeta.map(({ key, icon: Icon, color, from }, i) => {
+            const card = t.about.cards[key];
+            return (
+              <motion.div
+                key={key}
+                variants={dv[from]}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{
+                  duration: 0.55,
+                  delay: i * 0.08,
+                  ease: "easeOut",
+                }}
+                whileHover={{ y: -6, transition: { duration: 0.15 } }}
+                className="glass-card group relative overflow-hidden transition-all duration-300"
                 style={{
-                  background: `radial-gradient(circle at 50% 0%, ${color}18, transparent 70%)`,
                   borderRadius: "24px",
+                  padding: "28px",
+                  border: "1px solid var(--glass-border)",
                 }}
-              />
-              <div
-                style={{
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "12px",
-                  background: `${color}20`,
-                  border: `1px solid ${color}35`,
-                  marginBottom: "18px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = `${color}50`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--glass-border)";
                 }}
               >
-                <Icon style={{ color, fontSize: "1.3rem" }} />
-              </div>
-              <h3
-                className="text-white font-bold"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "1.125rem",
-                  marginBottom: "12px",
-                }}
-              >
-                {title}
-              </h3>
-              <p
-                className="text-white/55 leading-relaxed"
-                style={{ fontFamily: "var(--font-body)", fontSize: "0.9rem" }}
-              >
-                {text}
-              </p>
-            </motion.div>
-          ))}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(circle at 50% 0%, ${color}18, transparent 70%)`,
+                    borderRadius: "24px",
+                  }}
+                />
+                <div
+                  style={{
+                    width: "44px",
+                    height: "44px",
+                    borderRadius: "12px",
+                    background: `${color}20`,
+                    border: `1px solid ${color}35`,
+                    marginBottom: "18px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon style={{ color, fontSize: "1.3rem" }} />
+                </div>
+                <h3
+                  className="font-bold"
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "1.125rem",
+                    marginBottom: "12px",
+                    color: "var(--text-base)",
+                  }}
+                >
+                  {card.title}
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.9rem",
+                    color: "var(--text-muted)",
+                    lineHeight: "1.7",
+                  }}
+                >
+                  {card.text}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* Tech stack strip — fades up */}
+        {/* Tech stack */}
         <motion.div
-          variants={directionVariants.fadeUp}
+          variants={dv.fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.3 }}
@@ -259,16 +268,16 @@ export default function About() {
           style={{ textAlign: "center" }}
         >
           <p
-            className="text-white/40"
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "0.75rem",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
               marginBottom: "24px",
+              color: "var(--text-muted)",
             }}
           >
-            Core Stack
+            {t.about.coreStack}
           </p>
           <div
             style={{
@@ -291,19 +300,30 @@ export default function About() {
                   y: -3,
                   transition: { duration: 0.15 },
                 }}
-                className="glass-card border border-white/10 hover:border-violet-500/30 transition-all duration-200"
+                className="glass-card transition-all duration-200"
                 style={{
                   borderRadius: "9999px",
                   padding: "10px 18px",
                   display: "flex",
                   alignItems: "center",
                   gap: "8px",
+                  border: "1px solid var(--glass-border)",
+                  cursor: "default",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(139,92,246,0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--glass-border)";
                 }}
               >
                 <Icon style={{ color, fontSize: "1.1rem" }} />
                 <span
-                  className="text-white/60"
-                  style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.8rem",
+                    color: "var(--text-subtle)",
+                  }}
                 >
                   {name}
                 </span>
