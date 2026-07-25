@@ -71,30 +71,32 @@ function SkillPill({ skill, delay }) {
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: false, amount: 0.5 }}
       transition={{ duration: 0.3, delay, ease: "easeOut" }}
-      whileHover={{ scale: 1.08, y: -3, transition: { duration: 0.15 } }}
+      whileHover={{ scale: 1.1, y: -4, transition: { duration: 0.15 } }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = "var(--pill-hover-bg)";
-        e.currentTarget.style.borderColor = "var(--pill-hover-border)";
+        e.currentTarget.style.background = `${skill.color}18`;
+        e.currentTarget.style.borderColor = `${skill.color}60`;
+        e.currentTarget.style.boxShadow = `0 0 16px ${skill.color}40`;
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.background = "var(--glass-bg)";
         e.currentTarget.style.borderColor = "var(--glass-border)";
+        e.currentTarget.style.boxShadow = "none";
       }}
       style={{
         display: "flex",
         alignItems: "center",
-        gap: "7px",
-        padding: "7px 13px",
+        gap: "8px",
+        padding: "8px 15px",
         borderRadius: "999px",
         background: "var(--glass-bg)",
         border: "1px solid var(--glass-border)",
         cursor: "default",
         userSelect: "none",
-        transition: "background 0.2s, border-color 0.2s",
+        transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
     >
       <skill.icon
-        style={{ color: skill.color, fontSize: "1rem", flexShrink: 0 }}
+        style={{ color: skill.color, fontSize: "1.1rem", flexShrink: 0 }}
       />
       <span
         style={{
@@ -183,11 +185,14 @@ export default function Skills() {
                   delay: catIndex * 0.08,
                   ease: "easeOut",
                 }}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = `${accent}50`;
+                  e.currentTarget.style.borderColor = `${accent}60`;
+                  e.currentTarget.style.boxShadow = `0 16px 40px ${accent}20, 0 0 20px ${accent}15`;
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = "var(--glass-border)";
+                  e.currentTarget.style.boxShadow = "var(--glass-shadow)";
                 }}
                 style={{
                   borderRadius: "20px",
@@ -199,7 +204,7 @@ export default function Skills() {
                   boxShadow: "var(--glass-shadow)",
                   position: "relative",
                   overflow: "hidden",
-                  transition: "border-color 0.2s ease",
+                  transition: "all 0.3s ease",
                 }}
               >
                 {/* Accent orb */}

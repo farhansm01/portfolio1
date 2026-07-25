@@ -7,6 +7,7 @@ import { useRef } from "react";
 import { FaGithub, FaLinkedin, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 import { HiDownload } from "react-icons/hi";
 import { HiArrowDown, HiEnvelope } from "react-icons/hi2";
+import { SiNextdotjs, SiNodedotjs, SiReact } from "react-icons/si";
 import { TypeAnimation } from "react-type-animation";
 
 const socialLinks = [
@@ -146,13 +147,14 @@ export default function Hero() {
               style={{ gap: "16px", marginBottom: "32px" }}
             >
               <a
-                href="/resume.pdf"
-                download
+                href="/Farhan_Sadique_Mohee_Resume.pdf"
+                download="Farhan_Sadique_Mohee_Resume.pdf"
+                className="shine-button"
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.opacity = "0.85";
-                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.opacity = "0.9";
+                  e.currentTarget.style.transform = "translateY(-3px)";
                   e.currentTarget.style.boxShadow =
-                    "0 8px 25px rgba(139,92,246,0.4)";
+                    "0 12px 30px rgba(139,92,246,0.45)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.opacity = "1";
@@ -171,7 +173,7 @@ export default function Hero() {
                   gap: "8px",
                   whiteSpace: "nowrap",
                   textDecoration: "none",
-                  transition: "all 0.2s ease",
+                  transition: "all 0.3s ease",
                 }}
               >
                 <HiDownload className="w-4 h-4" />
@@ -184,10 +186,10 @@ export default function Hero() {
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(139,92,246,0.5)";
-                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.borderColor = "rgba(139,92,246,0.6)";
+                  e.currentTarget.style.transform = "translateY(-3px)";
                   e.currentTarget.style.boxShadow =
-                    "0 8px 25px rgba(139,92,246,0.15)";
+                    "0 12px 30px rgba(139,92,246,0.2)";
                   e.currentTarget.style.color = "var(--text-base)";
                 }}
                 onMouseLeave={(e) => {
@@ -209,9 +211,9 @@ export default function Hero() {
                   background: "var(--glass-bg)",
                   border: "1px solid var(--glass-border)",
                   cursor: "pointer",
-                  backdropFilter: "blur(12px)",
-                  WebkitBackdropFilter: "blur(12px)",
-                  transition: "all 0.2s ease",
+                  backdropFilter: "blur(16px)",
+                  WebkitBackdropFilter: "blur(16px)",
+                  transition: "all 0.3s ease",
                 }}
               >
                 <HiEnvelope className="w-4 h-4" />
@@ -234,11 +236,11 @@ export default function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  whileHover={{ scale: 1.15, y: -3 }}
+                  whileHover={{ scale: 1.18, y: -4 }}
                   whileTap={{ scale: 0.95 }}
                   style={{
-                    width: "40px",
-                    height: "40px",
+                    width: "42px",
+                    height: "42px",
                     borderRadius: "50%",
                     display: "flex",
                     alignItems: "center",
@@ -252,11 +254,13 @@ export default function Hero() {
                     textDecoration: "none",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(139,92,246,0.5)";
+                    e.currentTarget.style.borderColor = "rgba(139,92,246,0.6)";
+                    e.currentTarget.style.boxShadow = "0 0 16px rgba(139,92,246,0.3)";
                     e.currentTarget.style.color = "var(--text-base)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.borderColor = "var(--glass-border)";
+                    e.currentTarget.style.boxShadow = "none";
                     e.currentTarget.style.color = "var(--text-muted)";
                   }}
                 >
@@ -266,7 +270,7 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* RIGHT — Photo */}
+          {/* RIGHT — Photo with Rotating Ring & Floating Badges */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -276,16 +280,27 @@ export default function Hero() {
             <div className="relative">
               {/* Glow ring */}
               <div
-                className="absolute inset-0 rounded-full blur-2xl opacity-30 animate-pulse"
+                className="absolute inset-0 rounded-full blur-3xl opacity-40 animate-pulse"
                 style={{
                   background:
-                    "linear-gradient(135deg, rgba(139,92,246,0.6), rgba(34,211,238,0.6))",
-                  transform: "scale(1.15)",
+                    "radial-gradient(circle, rgba(139,92,246,0.7), rgba(34,211,238,0.7))",
+                  transform: "scale(1.25)",
                 }}
               />
-              {/* Photo */}
+
+              {/* Animated Outer Gradient Spinning Ring */}
               <div
-                className="relative rounded-full overflow-hidden"
+                className="absolute -inset-3 rounded-full opacity-70"
+                style={{
+                  background: "conic-gradient(from 0deg, #8b5cf6, #22d3ee, #f472b6, #8b5cf6)",
+                  animation: "spin-slow 12s linear infinite",
+                  filter: "blur(4px)",
+                }}
+              />
+
+              {/* Inner Photo Container */}
+              <div
+                className="relative rounded-full overflow-hidden z-10"
                 style={{
                   width: "clamp(240px, 30vw, 320px)",
                   height: "clamp(240px, 30vw, 320px)",
@@ -302,6 +317,51 @@ export default function Hero() {
                   priority
                 />
               </div>
+
+              {/* Floating Badge 1 - Next.js (Top Right) */}
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -top-3 -right-3 z-20 glass-card flex items-center gap-2 px-3 py-1.5 rounded-full shadow-lg"
+                style={{
+                  border: "1px solid rgba(139,92,246,0.4)",
+                  background: "rgba(5, 5, 16, 0.75)",
+                  backdropFilter: "blur(12px)",
+                }}
+              >
+                <SiNextdotjs className="w-4 h-4 text-purple-400" />
+                <span className="text-xs font-mono font-medium text-purple-200">Next.js</span>
+              </motion.div>
+
+              {/* Floating Badge 2 - React (Top Left) */}
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute top-1/4 -left-6 z-20 glass-card flex items-center gap-2 px-3 py-1.5 rounded-full shadow-lg"
+                style={{
+                  border: "1px solid rgba(34,211,238,0.4)",
+                  background: "rgba(5, 5, 16, 0.75)",
+                  backdropFilter: "blur(12px)",
+                }}
+              >
+                <SiReact className="w-4 h-4 text-cyan-400 animate-spin" style={{ animationDuration: "10s" }} />
+                <span className="text-xs font-mono font-medium text-cyan-200">React 19</span>
+              </motion.div>
+
+              {/* Floating Badge 3 - MERN (Bottom Right) */}
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="absolute -bottom-2 -right-2 z-20 glass-card flex items-center gap-2 px-3 py-1.5 rounded-full shadow-lg"
+                style={{
+                  border: "1px solid rgba(52,211,153,0.4)",
+                  background: "rgba(5, 5, 16, 0.75)",
+                  backdropFilter: "blur(12px)",
+                }}
+              >
+                <SiNodedotjs className="w-4 h-4 text-emerald-400" />
+                <span className="text-xs font-mono font-medium text-emerald-200">MERN</span>
+              </motion.div>
             </div>
           </motion.div>
         </div>

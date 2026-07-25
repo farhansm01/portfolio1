@@ -12,46 +12,50 @@ const projectBase = [
   {
     id: 1,
     number: "01",
+    key: "nestly",
+    slug: "nestly",
+    name: "Nestly",
+    stack: ["Next.js 16", "BetterAuth", "Google Gemini", "Stripe", "MongoDB"],
+    live: "https://nestly-client-silk.vercel.app/",
+    github: "https://github.com/farhansm01/nestly-client",
+    image: "/projects/nestly.png",
+    color: "#eab308",
+  },
+  {
+    id: 2,
+    number: "02",
+    key: "drift",
+    slug: "drift",
+    name: "Drift",
+    stack: ["Next.js", "Express", "BetterAuth", "MongoDB", "TypeScript"],
+    live: "https://drift-client-alpha.vercel.app/",
+    github: "https://github.com/farhansm01/drift-client",
+    image: "/projects/drift.png",
+    color: "#94a3b8",
+  },
+  {
+    id: 3,
+    number: "03",
+    key: "resellhub",
+    slug: "resell-hub",
+    name: "ResellHub",
+    stack: ["Next.js", "BetterAuth", "Stripe", "MongoDB", "Tailwind"],
+    live: "https://resell-hub-client-xi.vercel.app/",
+    github: "https://github.com/farhansm01/resell-hub-client",
+    image: "/projects/resellhub.png",
+    color: "#34d399",
+  },
+  {
+    id: 4,
+    number: "04",
     key: "openshelf",
+    slug: "openshelf",
     name: "OpenShelf",
     stack: ["Next.js", "BetterAuth", "MongoDB", "Tailwind", "DaisyUI"],
     live: "https://open-shelf-ten.vercel.app/",
     github: "https://github.com/farhansm01/OpenShelf",
     image: "/projects/openshelf.png",
     color: "#8b5cf6",
-  },
-  {
-    id: 2,
-    number: "02",
-    key: "dragonnews",
-    name: "Dragon News",
-    stack: ["Next.js", "BetterAuth", "Tailwind", "React Marquee"],
-    live: "https://dragon-news-omega-lemon.vercel.app/",
-    github: "https://github.com/farhansm01/Dragon-News",
-    image: "/projects/dragon-news.png",
-    color: "#22d3ee",
-  },
-  {
-    id: 3,
-    number: "03",
-    key: "bookvibe",
-    name: "Book Vibe",
-    stack: ["React 19", "React Router v7", "Tailwind", "DaisyUI", "Recharts"],
-    live: "https://book-vibe-fsm.netlify.app/",
-    github: "https://github.com/farhansm01/Book-Vibe",
-    image: "/projects/book-vibe.png",
-    color: "#f472b6",
-  },
-  {
-    id: 4,
-    number: "04",
-    key: "keenkeeper",
-    name: "KeenKeeper",
-    stack: ["React", "React Router", "Context API", "Tailwind", "Recharts"],
-    live: "https://keen-keeper-fsm.netlify.app/",
-    github: "https://github.com/farhansm01/Keen-Keeper",
-    image: "/projects/keen-keeper.png",
-    color: "#fb923c",
   },
 ];
 
@@ -160,10 +164,11 @@ export default function Projects() {
               {/* Image card */}
               <div style={{ width: "460px", flexShrink: 0 }}>
                 <div
-                  className="glass-card overflow-hidden"
+                  className="glass-card overflow-hidden transition-all duration-500"
                   style={{
                     borderRadius: "24px",
-                    border: "1px solid var(--glass-border)",
+                    border: `1px solid ${active.color}40`,
+                    boxShadow: `0 20px 50px ${active.color}25, 0 0 30px ${active.color}15`,
                   }}
                 >
                   <div
@@ -444,7 +449,7 @@ export default function Projects() {
                         {t.projects.github}
                       </a>
                       <Link
-                        href={`/projects/${active.name.toLowerCase().replace(/\s+/g, "-")}`}
+                        href={`/projects/${active.slug}`}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.borderColor =
                             "rgba(139,92,246,0.5)";
@@ -663,7 +668,7 @@ export default function Projects() {
                       <FaGithub /> {t.projects.github}
                     </a>
                     <Link
-                      href={`/projects/${project.name.toLowerCase().replace(/\s+/g, "-")}`}
+                      href={`/projects/${project.slug}`}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.borderColor =
                           "rgba(139,92,246,0.5)";
@@ -701,6 +706,41 @@ export default function Projects() {
             ))}
           </div>
         )}
+
+        {/* View All Projects CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          style={{
+            marginTop: "60px",
+            textAlign: "center",
+          }}
+        >
+          <Link
+            href="/projects"
+            className="shine-button"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "14px 32px",
+              borderRadius: "9999px",
+              background: "linear-gradient(135deg, #8b5cf6, #22d3ee)",
+              color: "white",
+              fontFamily: "var(--font-body)",
+              fontSize: "1rem",
+              fontWeight: "600",
+              textDecoration: "none",
+              boxShadow: "0 8px 25px rgba(139,92,246,0.3)",
+              transition: "all 0.3s ease",
+            }}
+          >
+            {t.projects.viewAll || "View All Projects"}
+            <HiArrowRight style={{ fontSize: "1.1rem" }} />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

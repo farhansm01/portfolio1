@@ -70,7 +70,7 @@ const translations = {
     education: {
       eyebrow: "My Background",
       heading: "Education &",
-      headingHighlight: "Training",
+      headingHighlight: "Journey",
       items: {
         undergraduate: {
           type: "Undergraduate",
@@ -80,15 +80,6 @@ const translations = {
           location: "Dhaka, Bangladesh",
           description:
             "Studying core computer science fundamentals including data structures, algorithms, software engineering, and database systems. Currently in the 8th semester with a strong focus on full stack web development.",
-        },
-        bootcamp: {
-          type: "Bootcamp",
-          title: "Complete Web Development",
-          institution: "Programming Hero",
-          period: "2024 — Present",
-          statusLabel: "In Progress",
-          description:
-            "Intensive full stack bootcamp covering React, Next.js, Node.js, Express, and MongoDB with hands-on projects and real-world assignments.",
         },
         hsc: {
           type: "Higher Secondary",
@@ -110,9 +101,19 @@ const translations = {
       eyebrow: "What I have built",
       heading: "Featured",
       headingHighlight: "Projects",
+      viewAll: "View All Projects",
+      allProjectsEyebrow: "Portfolio Showcase",
+      allProjectsHeading: "All",
+      allProjectsHeadingHighlight: "Projects",
       liveDemo: "Live Demo",
       github: "GitHub",
       viewDetails: "View Details",
+      backToProjects: "Back to Projects",
+      aboutProject: "About the Project",
+      whyThisProject: "Why This Project?",
+      purposeLabel: "Purpose & Problem Solved",
+      challengesFaced: "Challenges Faced",
+      futurePlans: "Future Plans",
       items: {
         openshelf: {
           tagline: "Online Book Borrowing Platform",
@@ -133,6 +134,26 @@ const translations = {
           tagline: "Relationship Management App",
           description:
             "A personal relationship tracker with interaction timeline, analytics dashboard, and friend management. Uses Context API for state and Recharts for visual analytics.",
+        },
+        resellhub: {
+          tagline: "Full-Stack Second-Hand Marketplace",
+          description:
+            "A full stack marketplace for buying and selling second-hand items, with Stripe-powered checkout, secure auth, and a clean listing management system.",
+        },
+        drift: {
+          tagline: "Car Rental Listing Platform",
+          description:
+            "A car rental listing platform built under a tight deadline, with JWT-secured server-to-server calls and a metallic, glassmorphic UI.",
+        },
+        nestly: {
+          tagline: "AI-Powered Real Estate Platform",
+          description:
+            "A full stack real estate platform where users can discover, list, and manage luxury properties, powered by Google Gemini for smart recommendations, document risk auditing, and a live chat assistant.",
+        },
+        docappoint: {
+          tagline: "Doctor Appointment Booking Platform",
+          description:
+            "A full stack doctor appointment platform where patients can search verified doctors, view detailed profiles, and book appointments in a few clicks, with a personal dashboard to manage bookings.",
         },
       },
     },
@@ -225,7 +246,7 @@ const translations = {
     education: {
       eyebrow: "Mein Hintergrund",
       heading: "Ausbildung &",
-      headingHighlight: "Weiterbildung",
+      headingHighlight: "Werdegang",
       items: {
         undergraduate: {
           type: "Bachelor",
@@ -235,15 +256,6 @@ const translations = {
           location: "Dhaka, Bangladesch",
           description:
             "Studium der Grundlagen der Informatik, einschließlich Datenstrukturen, Algorithmen, Software-Engineering und Datenbanksysteme. Aktuell im 8. Semester mit starkem Fokus auf Full-Stack-Webentwicklung.",
-        },
-        bootcamp: {
-          type: "Bootcamp",
-          title: "Komplette Webentwicklung",
-          institution: "Programming Hero",
-          period: "2024 — Heute",
-          statusLabel: "In Bearbeitung",
-          description:
-            "Intensives Full-Stack-Bootcamp mit React, Next.js, Node.js, Express und MongoDB — praxisnahe Projekte und reale Aufgaben.",
         },
         hsc: {
           type: "Abitur",
@@ -265,29 +277,148 @@ const translations = {
       eyebrow: "Was ich gebaut habe",
       heading: "Ausgewählte",
       headingHighlight: "Projekte",
+      viewAll: "Alle Projekte anzeigen",
+      allProjectsEyebrow: "Portfolio-Galerie",
+      allProjectsHeading: "Alle",
+      allProjectsHeadingHighlight: "Projekte",
       liveDemo: "Live-Demo",
       github: "GitHub",
       viewDetails: "Details anzeigen",
+      backToProjects: "Zurück zu Projekten",
+      aboutProject: "Über das Projekt",
+      whyThisProject: "Warum dieses Projekt?",
+      purposeLabel: "Zweck & Gelöstes Problem",
+      challengesFaced: "Herausforderungen",
+      futurePlans: "Zukünftige Pläne",
       items: {
         openshelf: {
           tagline: "Online-Buchausleihplattform",
           description:
             "Eine Full-Stack-Buchausleihplattform, auf der Nutzer Bücher online durchsuchen, ausleihen und verwalten können. Mit Google OAuth, geschützten Routen und einem übersichtlichen Bibliotheksverwaltungssystem.",
+          challenges: [
+            "Die Integration von BetterAuth war die größte Hürde — Social Login mit Google schlug aufgrund von Callback-URL-Fehlkonfigurationen und OAuth-Berechtigungsproblemen fehl.",
+            "Die Verwaltung geschützter Routen und Sitzungspersistenz über Server- und Client-Komponenten in Next.js hinweg erforderte eine durchdachte Architektur.",
+            "Die Ausleihlogik für Bücher — Handhabung von Verfügbarkeitsstatus, Fälligkeitsdaten und Verhinderung von Mehrfachausleihen."
+          ],
+          future: [
+            "Erstellung eines Admin-Dashboards zum Hinzufügen, Bearbeiten und Entfernen von Büchern sowie zur Nutzerverwaltung.",
+            "E-Mail-Benachrichtigungen für Fälligkeitserinnerungen und Ausleihbestätigungen.",
+            "Buchempfehlungssystem basierend auf der Lesehistorie und Präferenzen.",
+            "Bewertungs- und Rezensionssystem für Bücher."
+          ]
         },
         dragonnews: {
           tagline: "Kategoriebasierte Nachrichtenplattform",
           description:
             "Ein Nachrichtenportal mit kategoriebasiertem Browsen, privaten Routen und OAuth-Login. Mit React-Marquee-Ticker, dynamischer Kategorie-Sidebar und reibungslosem Authentifizierungsfluss.",
+          challenges: [
+            "Lernkurve bei der ersten Verwendung von BetterAuth für Authentifizierungsabläufe und geschützte Routen.",
+            "Synchronisierung der Kategorie-Sidebar mit dem News-Feed ohne unnötige Re-Renders.",
+            "Reaktionsschneller React Marquee-Ticker über verschiedene Bildschirmgrößen hinweg."
+          ],
+          future: [
+            "Multi-Rollen-Authentifizierungssystem (Admin, Redakteure, normale Leser).",
+            "Rich-Text-Editor für die Erstellung von Artikeln.",
+            "Suchfunktionalität mit Filtern nach Kategorie, Datum und Autor."
+          ]
         },
         bookvibe: {
           tagline: "Smarte Buchbibliotheks-App",
           description:
             "Eine Buchbibliotheks-App mit Leselisten- und Wunschlisten-Funktion über localStorage. Gebaut mit React 19, React Router v7 und Recharts für Lese-Analysen.",
+          challenges: [
+            "Erste Schritte mit React Router v7 und neuen Mustern beim Laden von Daten.",
+            "Verwaltung des localStorage-Zustands über mehrere Komponenten hinweg ohne globale State-Bibliothek.",
+            "Datenumwandlung für Recharts-Leseanalysen."
+          ],
+          future: [
+            "Anbindung an ein Backend mit Nutzerkonten für geräteübergreifende Speicherung.",
+            "Integration der Google Books API zur Buchsuche.",
+            "Fortschrittstracking für gelesene Seiten."
+          ]
         },
         keenkeeper: {
           tagline: "Beziehungsmanagement-App",
           description:
             "Ein persönlicher Beziehungs-Tracker mit Interaktions-Timeline, Analyse-Dashboard und Freundschaftsverwaltung. Nutzt Context API für den State und Recharts für visuelle Analysen.",
+          challenges: [
+            "Komplexes Datenmodell für Interaktions-Timelines einzelner Kontakte.",
+            "Skalierung des Context API bei wachsender Anwendungsgröße.",
+            "Aggregieren von Interaktionsdaten für das Recharts-Dashboard."
+          ],
+          future: [
+            "Direkte Kommunikationsfunktionen über WhatsApp/Twilio-API.",
+            "Erinnerungen und Benachrichtigungen für Kontaktaufnahmen.",
+            "Kontakt-Import aus dem Telefonbuch oder Google Contacts."
+          ]
+        },
+        resellhub: {
+          tagline: "Full-Stack Second-Hand-Marktplatz",
+          description:
+            "Ein Full-Stack-Marktplatz zum Kaufen und Verkaufen von gebrauchten Artikeln, mit Stripe-gestütztem Checkout, sicherer Authentifizierung und einem übersichtlichen Angebotsverwaltungssystem.",
+          challenges: [
+            "Wechsel von HeroUI zu purem Tailwind mitten im Projekt zur Vermeidung von Styling-Konflikten.",
+            "Stripe-Integration für den Checkout-Ablauf, Payment Intents und Webhooks.",
+            "Verbindung zu MongoDB Atlas über Nicht-SRV-Verbindungszeichenfolgen bei ISP-DNS-Sperren."
+          ],
+          future: [
+            "Bewertungs- und Rezensionssystem für Käufer und Verkäufer.",
+            "In-App-Nachrichtensystem zur Preisverhandlung.",
+            "Bestellverfolgung und Versandstatus-Updates.",
+            "Admin-Dashboard für Moderation und Konfliktlösung."
+          ]
+        },
+        drift: {
+          tagline: "Autovermietungs-Plattform",
+          description:
+            "Eine Autovermietungsplattform, entwickelt unter engem Zeitdruck, mit JWT-gesicherten Server-zu-Server-Aufrufen und einer metallischen, glasartigen Oberfläche.",
+          challenges: [
+            "Fixierung der BetterAuth-Version wegen Breaking Changes in Kysely unter Zeitdruck.",
+            "Einrichtung der JWT-Verifizierung zwischen Next.js-Frontend und Express-Backend über ein JWKS-Endpunkt.",
+            "Entwicklung des metallisch-glasartigen UI-Designs mit Tailwind."
+          ],
+          future: [
+            "Buchungskalender für Echtzeit-Verfügbarkeit der Fahrzeuge.",
+            "Bewertungssystem für Mieterfahrungen.",
+            "Zahlungsintegration für Kautionen und Mietbeträge.",
+            "Vermieter-Dashboard zur Verwaltung von Inseraten und Einnahmen."
+          ]
+        },
+        nestly: {
+          tagline: "KI-gestützte Immobilienplattform",
+          description:
+            "Eine Full-Stack-Immobilienplattform, auf der Nutzer Luxusimmobilien entdecken, inserieren und verwalten können, angetrieben von Google Gemini für intelligente Empfehlungen, Dokumentenrisikoprüfung und einen Live-Chat-Assistenten.",
+          purpose:
+            "Revolutioniert den Kauf von Luxusimmobilien durch die Kombination von KI-Dokumentenrisikoprüfung, Gemini-gestützten Immobilienempfehlungen und sofortiger Stripe-Immobilienreservierung.",
+          challenges: [
+            "Prompt-Engineering für Google Gemini für 3 verschiedene KI-Features (Empfehlungen, Dokumentenprüfung, Live-Chat).",
+            "Rollenbasierte Dashboards (Käufer, Verkäufer, Admins) mit unterschiedlichen Rechten.",
+            "Synchronisierung von Stripe-Zahlungsstatus, Inseratstatus und Benutzerrollen."
+          ],
+          future: [
+            "Gespeicherte Suchen mit E-Mail-Benachrichtigungen bei neuen Angeboten.",
+            "Hypotheken- und Finanzierungsrechner auf Immobilien-Detailseiten.",
+            "Virtuelle 360°-Rundgänge für Immobilien.",
+            "Erweiterung des KI-Assistenten zur direkten Besichtigungsterminbuchung."
+          ]
+        },
+        docappoint: {
+          tagline: "Arzt-Terminbuchungsplattform",
+          description:
+            "Eine Full-Stack-Arztterminplattform, auf der Patienten verifizierte Ärzte suchen, detaillierte Profile einsehen und Termine mit wenigen Klicks buchen können, inklusive persönlichem Dashboard zur Terminverwaltung.",
+          purpose:
+            "Beseitigt lange Wartezeiten in Praxen und Telefonketten durch ein einfaches Online-System zur Suche nach verifizierten Fachärzten mit Echtzeit-Verfügbarkeit.",
+          challenges: [
+            "Die Arztsuche auf der Übersichtsseite so zu bauen, dass große Listen clientseitig gefiltert werden und die Benutzeroberfläche sofort reagiert.",
+            "Das persönliche Dashboard so zu verdrahten, dass Terminaktualisierungen und Stornierungen sofort in der Benutzeroberfläche mit Toast-Feedback reflektieren, ohne dass ein vollständiger Seitenaufruf erforderlich ist.",
+            "Die Direktaktualisierung von Profilfoto und Namen über das Dashboard erforderte eine präzise Statussynchronisierung mit BetterAuth-Sitzungsdaten."
+          ],
+          future: [
+            "Arzt-Dashboard zur eigenständigen Verwaltung von Verfügbarkeiten und Terminen.",
+            "Terminerinnerungen per E-Mail oder SMS vor dem geplanten Zeitpunkt.",
+            "Bewertungen und Rezensionen für Ärzte basierend auf abgeschlossenen Terminen.",
+            "Zahlungsintegration für Beratungsgebühren direkt bei der Buchung."
+          ]
         },
       },
     },

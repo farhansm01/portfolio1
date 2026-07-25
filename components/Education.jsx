@@ -3,10 +3,9 @@
 import { useLang } from "@/context/LanguageContext";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { SiMongodb, SiNextdotjs, SiNodedotjs, SiReact } from "react-icons/si";
 import EducationCard from "./EducationCard";
 
-const nodeColors = ["#8b5cf6", "#22d3ee", "#f472b6", "#fb923c"];
+const nodeColors = ["#8b5cf6", "#22d3ee", "#f472b6"];
 
 function MotionIcon({ progress, pathRef }) {
   const x = useTransform(progress, (p) => {
@@ -59,35 +58,14 @@ export default function Education() {
     },
     {
       id: 2,
-      type: e.bootcamp.type,
+      type: e.hsc.type,
       typeColor: "#22d3ee",
       typeBg: "rgba(34,211,238,0.1)",
       typeBorder: "rgba(34,211,238,0.25)",
       accentColor: "#22d3ee",
-      title: e.bootcamp.title,
-      institution: e.bootcamp.institution,
-      institutionColor: "#22d3ee",
-      period: e.bootcamp.period,
-      location: null,
-      description: e.bootcamp.description,
-      status: { label: e.bootcamp.statusLabel, color: "#4ade80" },
-      icons: [
-        { icon: SiReact, color: "#61DAFB" },
-        { icon: SiNextdotjs, color: "#6d28d9" },
-        { icon: SiNodedotjs, color: "#68A063" },
-        { icon: SiMongodb, color: "#4DB33D" },
-      ],
-    },
-    {
-      id: 3,
-      type: e.hsc.type,
-      typeColor: "#f472b6",
-      typeBg: "rgba(244,114,182,0.1)",
-      typeBorder: "rgba(244,114,182,0.25)",
-      accentColor: "#f472b6",
       title: e.hsc.title,
       institution: e.hsc.institution,
-      institutionColor: "#f472b6",
+      institutionColor: "#22d3ee",
       period: e.hsc.period,
       location: e.hsc.location,
       description: null,
@@ -95,15 +73,15 @@ export default function Education() {
       icons: null,
     },
     {
-      id: 4,
+      id: 3,
       type: e.ssc.type,
-      typeColor: "#fb923c",
-      typeBg: "rgba(251,146,60,0.1)",
-      typeBorder: "rgba(251,146,60,0.25)",
-      accentColor: "#fb923c",
+      typeColor: "#f472b6",
+      typeBg: "rgba(244,114,182,0.1)",
+      typeBorder: "rgba(244,114,182,0.25)",
+      accentColor: "#f472b6",
       title: e.ssc.title,
       institution: e.ssc.institution,
-      institutionColor: "#fb923c",
+      institutionColor: "#f472b6",
       period: e.ssc.period,
       location: e.ssc.location,
       description: null,

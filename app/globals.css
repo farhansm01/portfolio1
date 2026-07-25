@@ -185,22 +185,100 @@ body::before {
 }
 
 .bg-orb-cyan {
-  width: 500px;
-  height: 500px;
+  width: 550px;
+  height: 550px;
   background: var(--orb-cyan);
   bottom: -150px;
   right: -150px;
   animation: float 15s ease-in-out infinite reverse;
 }
 
+.bg-orb-rose {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(244, 114, 182, 0.1) 0%, transparent 70%);
+  top: 40%;
+  right: -100px;
+  animation: float-alt 18s ease-in-out infinite;
+}
+
+.bg-orb-emerald {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.08) 0%, transparent 70%);
+  bottom: 20%;
+  left: -100px;
+  animation: float-alt 14s ease-in-out infinite reverse;
+}
+
 @keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px) scale(1);
+  0%, 100% {
+    transform: translateY(0px) scale(1) rotate(0deg);
   }
   50% {
-    transform: translateY(-30px) scale(1.05);
+    transform: translateY(-35px) scale(1.08) rotate(5deg);
   }
+}
+
+@keyframes float-alt {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+  }
+  50% {
+    transform: translateY(25px) translateX(-20px) scale(1.05);
+  }
+}
+
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(200%) rotate(25deg); }
+}
+
+.shine-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-button::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%) rotate(25deg);
+  transition: transform 0.6s ease;
+}
+
+.shine-button:hover::after {
+  animation: shine 1.2s ease-in-out infinite;
+}
+
+.glass-card-interactive {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-interactive:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(139, 92, 246, 0.18), 0 0 20px rgba(34, 211, 238, 0.15);
+  border-color: rgba(139, 92, 246, 0.4) !important;
 }
 
 /* Fix hero photo border in light mode */
@@ -227,8 +305,27 @@ body {
   overflow-x: clip;
 }
 
-/* ── Light mode glass stronger contrast ─────────────────── */
-html:not(.dark) .glass-card {
-  background: rgba(109, 40, 217, 0.08) !important;
-  border-color: rgba(109, 40, 217, 0.22) !important;
+/* ── Custom Cursor Styles ── */
+@media (pointer: fine) {
+  body {
+    cursor: default;
+  }
+  a, button, input, textarea, select, .glass-card, [role="button"] {
+    cursor: pointer;
+  }
 }
+
+/* ── Light mode glass stronger contrast & depth ─────────────────── */
+html:not(.dark) .glass-card {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(139, 92, 246, 0.22) !important;
+  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.08) !important;
+}
+
+html.dark .glass-card {
+  background: rgba(8, 8, 24, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4) !important;
+}
+
+

@@ -347,12 +347,14 @@ export default function Contact() {
                   required
                   placeholder={t.contact.form.namePlaceholder}
                   style={inputStyle}
-                  onFocus={(e) =>
-                    (e.target.style.borderColor = "rgba(139,92,246,0.6)")
-                  }
-                  onBlur={(e) =>
-                    (e.target.style.borderColor = "var(--glass-border)")
-                  }
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "rgba(139,92,246,0.7)";
+                    e.target.style.boxShadow = "0 0 20px rgba(139,92,246,0.25)";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "var(--glass-border)";
+                    e.target.style.boxShadow = "none";
+                  }}
                 />
               </div>
               <div>
@@ -365,12 +367,14 @@ export default function Contact() {
                   required
                   placeholder={t.contact.form.emailPlaceholder}
                   style={inputStyle}
-                  onFocus={(e) =>
-                    (e.target.style.borderColor = "rgba(139,92,246,0.6)")
-                  }
-                  onBlur={(e) =>
-                    (e.target.style.borderColor = "var(--glass-border)")
-                  }
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "rgba(139,92,246,0.7)";
+                    e.target.style.boxShadow = "0 0 20px rgba(139,92,246,0.25)";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "var(--glass-border)";
+                    e.target.style.boxShadow = "none";
+                  }}
                 />
               </div>
               <div>
@@ -383,21 +387,24 @@ export default function Contact() {
                   placeholder={t.contact.form.messagePlaceholder}
                   rows={5}
                   style={{ ...inputStyle, resize: "vertical" }}
-                  onFocus={(e) =>
-                    (e.target.style.borderColor = "rgba(139,92,246,0.6)")
-                  }
-                  onBlur={(e) =>
-                    (e.target.style.borderColor = "var(--glass-border)")
-                  }
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "rgba(139,92,246,0.7)";
+                    e.target.style.boxShadow = "0 0 20px rgba(139,92,246,0.25)";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "var(--glass-border)";
+                    e.target.style.boxShadow = "none";
+                  }}
                 />
               </div>
 
               <motion.button
                 type="submit"
                 disabled={status === "sending"}
+                className="shine-button"
                 whileHover={{
                   scale: 1.02,
-                  boxShadow: "0 8px 25px rgba(139,92,246,0.35)",
+                  boxShadow: "0 10px 30px rgba(139,92,246,0.45)",
                 }}
                 whileTap={{ scale: 0.98 }}
                 style={{
@@ -418,7 +425,7 @@ export default function Contact() {
                   alignItems: "center",
                   justifyContent: "center",
                   gap: "8px",
-                  transition: "all 0.2s ease",
+                  transition: "all 0.3s ease",
                 }}
               >
                 <HiPaperAirplane style={{ fontSize: "1.1rem" }} />

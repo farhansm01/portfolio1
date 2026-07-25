@@ -196,7 +196,7 @@ export default function About() {
                   delay: i * 0.08,
                   ease: "easeOut",
                 }}
-                whileHover={{ y: -6, transition: { duration: 0.15 } }}
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
                 className="glass-card group relative overflow-hidden transition-all duration-300"
                 style={{
                   borderRadius: "24px",
@@ -204,33 +204,36 @@ export default function About() {
                   border: "1px solid var(--glass-border)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = `${color}50`;
+                  e.currentTarget.style.borderColor = `${color}60`;
+                  e.currentTarget.style.boxShadow = `0 16px 35px ${color}22, 0 0 15px ${color}20`;
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = "var(--glass-border)";
+                  e.currentTarget.style.boxShadow = "var(--glass-shadow)";
                 }}
               >
                 <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                   style={{
-                    background: `radial-gradient(circle at 50% 0%, ${color}18, transparent 70%)`,
+                    background: `radial-gradient(circle at 50% 0%, ${color}25, transparent 70%)`,
                     borderRadius: "24px",
                   }}
                 />
                 <div
                   style={{
-                    width: "44px",
-                    height: "44px",
-                    borderRadius: "12px",
+                    width: "48px",
+                    height: "48px",
+                    borderRadius: "14px",
                     background: `${color}20`,
-                    border: `1px solid ${color}35`,
+                    border: `1px solid ${color}40`,
                     marginBottom: "18px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
+                    boxShadow: `0 4px 14px ${color}25`,
                   }}
                 >
-                  <Icon style={{ color, fontSize: "1.3rem" }} />
+                  <Icon style={{ color, fontSize: "1.4rem" }} />
                 </div>
                 <h3
                   className="font-bold"
@@ -297,10 +300,10 @@ export default function About() {
                 transition={{ duration: 0.3, delay: i * 0.06, ease: "easeOut" }}
                 whileHover={{
                   scale: 1.12,
-                  y: -3,
+                  y: -4,
                   transition: { duration: 0.15 },
                 }}
-                className="glass-card transition-all duration-200"
+                className="glass-card transition-all duration-300"
                 style={{
                   borderRadius: "9999px",
                   padding: "10px 18px",
@@ -311,13 +314,17 @@ export default function About() {
                   cursor: "default",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(139,92,246,0.4)";
+                  e.currentTarget.style.borderColor = `${color}60`;
+                  e.currentTarget.style.background = `${color}15`;
+                  e.currentTarget.style.boxShadow = `0 0 20px ${color}35`;
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = "var(--glass-border)";
+                  e.currentTarget.style.background = "var(--glass-bg)";
+                  e.currentTarget.style.boxShadow = "none";
                 }}
               >
-                <Icon style={{ color, fontSize: "1.1rem" }} />
+                <Icon style={{ color, fontSize: "1.2rem" }} />
                 <span
                   style={{
                     fontFamily: "var(--font-mono)",

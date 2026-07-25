@@ -3,8 +3,31 @@
 import { useLang } from "@/context/LanguageContext";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HiBars3, HiMoon, HiSun, HiXMark } from "react-icons/hi2";
+
+function FlagGB() {
+  return (
+    <svg width="20" height="14" viewBox="0 0 60 30" style={{ borderRadius: "3px", overflow: "hidden", display: "inline-block", verticalAlign: "middle" }}>
+      <rect width="60" height="30" fill="#012169" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" />
+    </svg>
+  );
+}
+
+function FlagDE() {
+  return (
+    <svg width="20" height="14" viewBox="0 0 5 3" style={{ borderRadius: "3px", overflow: "hidden", display: "inline-block", verticalAlign: "middle" }}>
+      <rect width="5" height="1" y="0" fill="#000000" />
+      <rect width="5" height="1" y="1" fill="#DD0000" />
+      <rect width="5" height="1" y="2" fill="#FFCE00" />
+    </svg>
+  );
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -13,6 +36,8 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const { lang, setLang, t } = useLang();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const navLinks = [
     { label: t.nav.home, href: "#home" },
@@ -57,9 +82,15 @@ export default function Navbar() {
   }, []);
 
   const scrollTo = (href) => {
-    const el = document.getElementById(href.replace("#", ""));
-    if (el) el.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
+    if (pathname !== "/") {
+      router.push(`/${href}`);
+    } else {
+      const el = document.getElementById(href.replace("#", ""));
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
 
   return (
@@ -68,26 +99,29 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-0 left-0 right-0 z-50 overflow-x-hidden transition-all duration-500"
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 flex justify-center px-4"
         style={{
-          padding: scrolled ? "12px 0" : "20px 0",
-          background: scrolled ? "var(--navbar-bg)" : "transparent",
-          borderBottom: scrolled ? "1px solid var(--glass-border)" : "none",
-          backdropFilter: scrolled ? "blur(24px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
-          boxShadow: scrolled ? "var(--navbar-shadow)" : "none",
+          paddingTop: scrolled ? "12px" : "20px",
+          paddingBottom: scrolled ? "12px" : "20px",
         }}
       >
         <div
           style={{
-            maxWidth: "1152px",
+            maxWidth: scrolled ? "960px" : "1152px",
             margin: "0 auto",
             width: "100%",
-            padding: "0 20px",
+            padding: scrolled ? "8px 24px" : "0 20px",
             boxSizing: "border-box",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            borderRadius: scrolled ? "9999px" : "0px",
+            background: scrolled ? "var(--navbar-bg)" : "transparent",
+            border: scrolled ? "1px solid var(--glass-border)" : "1px solid transparent",
+            backdropFilter: scrolled ? "blur(24px)" : "none",
+            WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
+            boxShadow: scrolled ? "var(--navbar-shadow), 0 0 20px rgba(139,92,246,0.12)" : "none",
+            transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
           {/* Logo */}
@@ -178,18 +212,20 @@ export default function Navbar() {
                   boxShadow: "var(--glass-shadow)",
                   fontFamily: "var(--font-mono)",
                   fontSize: "0.85rem",
-                  gap: "5px",
-                  minWidth: "64px",
+                  gap: "6px",
+                  minWidth: "68px",
                 }}
               >
                 <span
                   style={{
-                    opacity: lang === "en" ? 1 : 0.4,
-                    transition: "opacity 0.2s",
-                    fontSize: "1rem",
+                    opacity: lang === "en" ? 1 : 0.35,
+                    filter: lang === "en" ? "drop-shadow(0 0 4px rgba(139,92,246,0.4))" : "grayscale(50%)",
+                    transition: "all 0.2s",
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
-                  🇬🇧
+                  <FlagGB />
                 </span>
                 <span
                   style={{ color: "var(--text-muted)", fontSize: "0.65rem" }}
@@ -198,12 +234,14 @@ export default function Navbar() {
                 </span>
                 <span
                   style={{
-                    opacity: lang === "de" ? 1 : 0.4,
-                    transition: "opacity 0.2s",
-                    fontSize: "1rem",
+                    opacity: lang === "de" ? 1 : 0.35,
+                    filter: lang === "de" ? "drop-shadow(0 0 4px rgba(139,92,246,0.4))" : "grayscale(50%)",
+                    transition: "all 0.2s",
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
-                  🇩🇪
+                  <FlagDE />
                 </span>
               </motion.button>
             )}
