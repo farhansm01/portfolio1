@@ -102,7 +102,7 @@ export default function Contact() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           style={{ textAlign: "center", marginBottom: "64px" }}
         >
@@ -149,7 +149,7 @@ export default function Contact() {
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.7 }}
             style={{ display: "flex", flexDirection: "column", gap: "24px" }}
           >
@@ -189,7 +189,7 @@ export default function Contact() {
                   rel="noopener noreferrer"
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   whileHover={{ x: 6 }}
                   onMouseEnter={(e) => {
@@ -296,7 +296,7 @@ export default function Contact() {
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.7 }}
             className="glass-card"
             style={{

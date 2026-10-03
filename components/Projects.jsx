@@ -24,6 +24,18 @@ const projectBase = [
   {
     id: 2,
     number: "02",
+    key: "resellhub",
+    slug: "resell-hub",
+    name: "ResellHub",
+    stack: ["Next.js", "BetterAuth", "Stripe", "MongoDB", "Tailwind"],
+    live: "https://resell-hub-client-xi.vercel.app/",
+    github: "https://github.com/farhansm01/resell-hub-client",
+    image: "/projects/resellhub_new.png",
+    color: "#34d399",
+  },
+  {
+    id: 3,
+    number: "03",
     key: "drift",
     slug: "drift",
     name: "Drift",
@@ -34,43 +46,51 @@ const projectBase = [
     color: "#94a3b8",
   },
   {
-    id: 3,
-    number: "03",
-    key: "resellhub",
-    slug: "resell-hub",
-    name: "ResellHub",
-    stack: ["Next.js", "BetterAuth", "Stripe", "MongoDB", "Tailwind"],
-    live: "https://resell-hub-client-xi.vercel.app/",
-    github: "https://github.com/farhansm01/resell-hub-client",
-    image: "/projects/resellhub.png",
-    color: "#34d399",
-  },
-  {
     id: 4,
     number: "04",
-    key: "openshelf",
-    slug: "openshelf",
-    name: "OpenShelf",
-    stack: ["Next.js", "BetterAuth", "MongoDB", "Tailwind", "DaisyUI"],
-    live: "https://open-shelf-ten.vercel.app/",
-    github: "https://github.com/farhansm01/OpenShelf",
-    image: "/projects/openshelf.png",
-    color: "#8b5cf6",
+    key: "docappoint",
+    slug: "docappoint",
+    name: "DocAppoint",
+    stack: ["Next.js 16", "React 19", "BetterAuth", "MongoDB", "Tailwind v4"],
+    live: "https://docappoint-client-indol.vercel.app/",
+    github: "https://github.com/farhansm01/docappoint-client",
+    image: "/projects/docappoint.png",
+    color: "#38bdf8",
   },
 ];
 
 export default function Projects() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [dynamicList, setDynamicList] = useState(null);
   const containerRef = useRef(null);
 
-  const projects = projectBase.map((p) => ({
-    ...p,
-    tagline: t.projects.items[p.key].tagline,
-    description: t.projects.items[p.key].description,
-  }));
-  const active = projects[activeIndex];
+  useEffect(() => {
+    fetch("/api/projects")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setDynamicList(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const rawProjects = (dynamicList || projectBase).slice(0, 4);
+  const projects = rawProjects.map((p, idx) => {
+    const projectKey = p.key || p.slug?.replace("-", "");
+    const localized = t.projects?.items?.[projectKey] || t.projects?.items?.[p.slug];
+    const tagline = p[lang]?.tagline || localized?.tagline || p.tagline;
+    const description = p[lang]?.description || localized?.description || p.description;
+    return {
+      ...p,
+      number: p.number || (idx + 1 < 10 ? `0${idx + 1}` : `${idx + 1}`),
+      tagline,
+      description,
+    };
+  });
+  const active = projects[activeIndex] || projects[0];
 
   useEffect(() => {
     const check = () => setIsDesktop(window.innerWidth >= 1024);
@@ -101,7 +121,7 @@ export default function Projects() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           style={{ textAlign: "center", marginBottom: "80px" }}
         >
@@ -219,7 +239,7 @@ export default function Projects() {
                         border: "1px solid var(--glass-border)",
                       }}
                     >
-                      {active.number} / 04
+                      {active?.number} / {String(projects.length).padStart(2, "0")}
                     </div>
                   </div>
                   <div style={{ padding: "20px 24px" }}>

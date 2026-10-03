@@ -1,13 +1,10 @@
-"use client";
-
 import { useLang } from "@/context/LanguageContext";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FaGithub, FaLinkedin, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
-import { HiDownload } from "react-icons/hi";
-import { HiArrowDown, HiEnvelope } from "react-icons/hi2";
-import { SiNextdotjs, SiNodedotjs, SiReact } from "react-icons/si";
+import { HiDownload, HiEye } from "react-icons/hi";
+import { HiArrowDown, HiArrowTopRightOnSquare, HiEnvelope, HiXMark } from "react-icons/hi2";
 import { TypeAnimation } from "react-type-animation";
 
 const socialLinks = [
@@ -28,6 +25,7 @@ const socialLinks = [
 
 export default function Hero() {
   const containerRef = useRef(null);
+  const [showResumeModal, setShowResumeModal] = useState(false);
   const { t } = useLang();
   const sequence = t.hero.roles.flatMap((role) => [role, 2000]);
 
@@ -146,9 +144,8 @@ export default function Hero() {
               className="flex flex-wrap items-center justify-center lg:justify-start"
               style={{ gap: "16px", marginBottom: "32px" }}
             >
-              <a
-                href="/Farhan_Sadique_Mohee_Resume.pdf"
-                download="Farhan_Sadique_Mohee_Resume.pdf"
+              <button
+                onClick={() => setShowResumeModal(true)}
                 className="shine-button"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.opacity = "0.9";
@@ -172,13 +169,14 @@ export default function Hero() {
                   alignItems: "center",
                   gap: "8px",
                   whiteSpace: "nowrap",
-                  textDecoration: "none",
+                  border: "none",
+                  cursor: "pointer",
                   transition: "all 0.3s ease",
                 }}
               >
-                <HiDownload className="w-4 h-4" />
+                <HiEye className="w-4 h-4" />
                 {t.hero.downloadCV}
-              </a>
+              </button>
               <button
                 onClick={() =>
                   document
@@ -317,51 +315,6 @@ export default function Hero() {
                   priority
                 />
               </div>
-
-              {/* Floating Badge 1 - Next.js (Top Right) */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-3 -right-3 z-20 glass-card flex items-center gap-2 px-3 py-1.5 rounded-full shadow-lg"
-                style={{
-                  border: "1px solid rgba(139,92,246,0.4)",
-                  background: "rgba(5, 5, 16, 0.75)",
-                  backdropFilter: "blur(12px)",
-                }}
-              >
-                <SiNextdotjs className="w-4 h-4 text-purple-400" />
-                <span className="text-xs font-mono font-medium text-purple-200">Next.js</span>
-              </motion.div>
-
-              {/* Floating Badge 2 - React (Top Left) */}
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute top-1/4 -left-6 z-20 glass-card flex items-center gap-2 px-3 py-1.5 rounded-full shadow-lg"
-                style={{
-                  border: "1px solid rgba(34,211,238,0.4)",
-                  background: "rgba(5, 5, 16, 0.75)",
-                  backdropFilter: "blur(12px)",
-                }}
-              >
-                <SiReact className="w-4 h-4 text-cyan-400 animate-spin" style={{ animationDuration: "10s" }} />
-                <span className="text-xs font-mono font-medium text-cyan-200">React 19</span>
-              </motion.div>
-
-              {/* Floating Badge 3 - MERN (Bottom Right) */}
-              <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="absolute -bottom-2 -right-2 z-20 glass-card flex items-center gap-2 px-3 py-1.5 rounded-full shadow-lg"
-                style={{
-                  border: "1px solid rgba(52,211,153,0.4)",
-                  background: "rgba(5, 5, 16, 0.75)",
-                  backdropFilter: "blur(12px)",
-                }}
-              >
-                <SiNodedotjs className="w-4 h-4 text-emerald-400" />
-                <span className="text-xs font-mono font-medium text-emerald-200">MERN</span>
-              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -394,6 +347,161 @@ export default function Hero() {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Resume Preview Modal */}
+      <AnimatePresence>
+        {showResumeModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowResumeModal(false)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+            style={{
+              background: "rgba(0, 0, 0, 0.75)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: "92vw",
+                maxWidth: "1000px",
+                height: "88vh",
+                borderRadius: "24px",
+                display: "flex",
+                flexDirection: "column",
+                overflow: "hidden",
+                background: "var(--card-bg, rgba(10, 10, 24, 0.98))",
+                border: "1px solid var(--glass-border)",
+                boxShadow: "0 24px 60px rgba(0,0,0,0.75)",
+              }}
+            >
+              {/* Modal Header */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "16px 24px",
+                  borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                  background: "rgba(5, 5, 18, 0.95)",
+                  gap: "16px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "1.1rem",
+                      fontWeight: "700",
+                      color: "#ffffff",
+                    }}
+                  >
+                    Farhan Sadiq — Resume
+                  </span>
+                  <span
+                    style={{
+                      padding: "2px 10px",
+                      borderRadius: "9999px",
+                      fontSize: "0.75rem",
+                      fontFamily: "var(--font-mono)",
+                      fontWeight: "700",
+                      background: "rgba(139, 92, 246, 0.2)",
+                      color: "#c084fc",
+                      border: "1px solid rgba(139, 92, 246, 0.4)",
+                    }}
+                  >
+                    PDF
+                  </span>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <a
+                    href="/Farhan_Sadique_Mohee_Resume.pdf"
+                    download="Farhan_Sadique_Mohee_Resume.pdf"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "8px 18px",
+                      borderRadius: "12px",
+                      background: "linear-gradient(135deg, #8b5cf6, #22d3ee)",
+                      color: "#ffffff",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.8rem",
+                      fontWeight: "600",
+                      textDecoration: "none",
+                      boxShadow: "0 4px 15px rgba(139,92,246,0.35)",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <HiDownload style={{ fontSize: "1rem" }} />
+                    <span>Download PDF</span>
+                  </a>
+
+                  <a
+                    href="/Farhan_Sadique_Mohee_Resume.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "8px 16px",
+                      borderRadius: "12px",
+                      background: "var(--glass-bg)",
+                      border: "1px solid var(--glass-border)",
+                      color: "var(--text-base)",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.8rem",
+                      textDecoration: "none",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <HiArrowTopRightOnSquare style={{ fontSize: "1rem" }} />
+                    <span>Open Tab</span>
+                  </a>
+
+                  <button
+                    onClick={() => setShowResumeModal(false)}
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "12px",
+                      background: "var(--glass-bg)",
+                      border: "1px solid var(--glass-border)",
+                      color: "var(--text-muted)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <HiXMark style={{ fontSize: "1.2rem" }} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Modal PDF Content */}
+              <div style={{ flex: 1, width: "100%", height: "100%", background: "#0f172a" }}>
+                <iframe
+                  src="/Farhan_Sadique_Mohee_Resume.pdf#toolbar=0&navpanes=0&view=FitH"
+                  style={{ width: "100%", height: "100%", border: "none" }}
+                  title="Farhan Sadiq Resume"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

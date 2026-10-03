@@ -1,10 +1,18 @@
 import { notFound } from "next/navigation";
+import { getAllProjects } from "@/lib/projectsStore";
 import { projectsData } from "../data";
 import ProjectDetailClient from "./ProjectDetailClient";
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
-  const project = projectsData.find((p) => p.slug === id);
+  let allProjects = [];
+  try {
+    allProjects = getAllProjects();
+  } catch {
+    allProjects = projectsData;
+  }
+
+  const project = allProjects.find((p) => p.slug === id) || projectsData.find((p) => p.slug === id);
 
   if (!project) {
     return {
@@ -12,8 +20,8 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const title = `${project.name} — ${project.tagline} | Farhan Sadiq`;
-  const description = project.description;
+  const title = `${project.name} — ${project.en?.tagline || project.tagline} | Farhan Sadiq`;
+  const description = project.en?.description || project.description;
   const url = `https://farhansadiq.dev/projects/${project.slug}`;
 
   return {
@@ -21,11 +29,10 @@ export async function generateMetadata({ params }) {
     description,
     keywords: [
       project.name,
-      ...project.stack,
+      ...(project.stack || []),
       "Farhan Sadiq",
       "Full Stack Developer",
       "Portfolio Project",
-      "Software Engineer Bangladesh",
     ],
     openGraph: {
       title,
@@ -47,7 +54,6 @@ export async function generateMetadata({ params }) {
       title,
       description,
       images: [project.image],
-      creator: "@farhan_sadiq22",
     },
   };
 }

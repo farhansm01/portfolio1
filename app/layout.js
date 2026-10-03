@@ -1,8 +1,25 @@
-import CustomCursor from "@/components/CustomCursor";
-import LiveBackground from "@/components/LiveBackground";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "next-themes";
+import { DM_Sans, JetBrains_Mono, Syne } from "next/font/google";
 import "./globals.css";
+
+const syne = Syne({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata = {
   metadataBase: new URL("https://farhansadiq.dev"),
@@ -104,7 +121,11 @@ const jsonLd = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
         <script
           type="application/ld+json"
@@ -118,15 +139,7 @@ export default function RootLayout({ children }) {
           enableSystem={false}
           disableTransitionOnChange={false}
         >
-          <LanguageProvider>
-            <CustomCursor />
-            <LiveBackground />
-            <div className="bg-orb bg-orb-violet" />
-            <div className="bg-orb bg-orb-cyan" />
-            <div className="bg-orb bg-orb-rose" />
-            <div className="bg-orb bg-orb-emerald" />
-            {children}
-          </LanguageProvider>
+          <LanguageProvider>{children}</LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

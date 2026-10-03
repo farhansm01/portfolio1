@@ -5,29 +5,54 @@ import { useLang } from "@/context/LanguageContext";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaGithub } from "react-icons/fa6";
 import {
   HiArrowLeft,
   HiArrowRight,
   HiArrowTopRightOnSquare,
+  HiCog6Tooth,
   HiMagnifyingGlass,
 } from "react-icons/hi2";
-import { projectsData } from "./data";
+import { projectsData as initialProjects } from "./data";
 
 const categories = ["All", "Next.js", "React", "Full Stack", "AI / Gemini"];
 
 export default function AllProjectsPage() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
+  const [projectsList, setProjectsList] = useState(initialProjects);
 
-  const filteredProjects = projectsData.filter((project) => {
+  useEffect(() => {
+    fetch("/api/projects")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setProjectsList(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const projectsToDisplay = projectsList.map((p) => {
+    const projectKey = p.key || p.slug?.replace("-", "");
+    const localized = t.projects?.items?.[projectKey] || t.projects?.items?.[p.slug];
+    const tagline = p[lang]?.tagline || localized?.tagline || p.tagline;
+    const description = p[lang]?.description || localized?.description || p.description;
+    return {
+      ...p,
+      tagline,
+      description,
+    };
+  });
+
+  const filteredProjects = projectsToDisplay.filter((project) => {
     const matchesSearch =
       project.name.toLowerCase().includes(search.toLowerCase()) ||
-      project.tagline.toLowerCase().includes(search.toLowerCase()) ||
-      project.description.toLowerCase().includes(search.toLowerCase()) ||
-      project.stack.some((tech) =>
+      (project.tagline || "").toLowerCase().includes(search.toLowerCase()) ||
+      (project.description || "").toLowerCase().includes(search.toLowerCase()) ||
+      (project.stack || []).some((tech) =>
         tech.toLowerCase().includes(search.toLowerCase()),
       );
 
@@ -35,15 +60,15 @@ export default function AllProjectsPage() {
 
     if (activeFilter === "All") return true;
     if (activeFilter === "Next.js")
-      return project.stack.some((tech) => tech.includes("Next.js"));
+      return (project.stack || []).some((tech) => tech.includes("Next.js"));
     if (activeFilter === "React")
-      return project.stack.some((tech) => tech.includes("React"));
+      return (project.stack || []).some((tech) => tech.includes("React"));
     if (activeFilter === "Full Stack")
       return (
-        project.stack.includes("MongoDB") || project.stack.includes("Express")
+        (project.stack || []).includes("MongoDB") || (project.stack || []).includes("Express")
       );
     if (activeFilter === "AI / Gemini")
-      return project.stack.some((tech) => tech.includes("Gemini"));
+      return (project.stack || []).some((tech) => tech.includes("Gemini"));
 
     return true;
   });
@@ -547,8 +572,11 @@ export default function AllProjectsPage() {
         style={{
           borderTop: "1px solid var(--glass-border)",
           padding: "24px 20px",
-          textAlign: "center",
           marginTop: "80px",
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <p
@@ -556,10 +584,43 @@ export default function AllProjectsPage() {
             fontFamily: "var(--font-body)",
             fontSize: "0.85rem",
             color: "var(--text-muted)",
+            margin: 0,
           }}
         >
           © {new Date().getFullYear()} Farhan Sadiq. All rights reserved.
         </p>
+
+        <Link
+          href="/admin"
+          title="Admin Dashboard"
+          aria-label="Admin Dashboard"
+          style={{
+            position: "absolute",
+            right: "20px",
+            opacity: 0.2,
+            transition: "all 0.3s ease",
+            color: "var(--text-muted)",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "8px",
+            borderRadius: "50%",
+            fontSize: "1rem",
+            textDecoration: "none",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = "0.9";
+            e.currentTarget.style.color = "#8b5cf6";
+            e.currentTarget.style.transform = "scale(1.15) rotate(45deg)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = "0.2";
+            e.currentTarget.style.color = "var(--text-muted)";
+            e.currentTarget.style.transform = "scale(1) rotate(0deg)";
+          }}
+        >
+          <HiCog6Tooth />
+        </Link>
       </footer>
     </main>
   );

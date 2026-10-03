@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { use } from "react";
+import { use, useEffect, useState } from "react";
 import { FaGithub } from "react-icons/fa6";
 import {
   HiArrowLeft,
@@ -139,20 +139,57 @@ function SectionHeading({ icon: Icon, color, label }) {
   );
 }
 
+
+
 export default function ProjectDetailClient({ params }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const { id } = use(params);
-  const project = projectsData.find((p) => p.slug === id);
+  const initialProject = projectsData.find((p) => p.slug === id);
+  const [project, setProject] = useState(initialProject);
+  const [loading, setLoading] = useState(!initialProject);
+
+  useEffect(() => {
+    fetch(`/api/projects/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && !data.error) {
+          setProject(data);
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading) {
+    return (
+      <main
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "var(--bg-page)",
+          color: "var(--text-muted)",
+          fontFamily: "var(--font-mono)",
+        }}
+      >
+        Loading project details...
+      </main>
+    );
+  }
+
   if (!project) notFound();
 
   const projectKey = project.key || project.slug.replace("-", "");
   const localized = t.projects?.items?.[projectKey] || t.projects?.items?.[project.slug];
 
-  const tagline = localized?.tagline || project.tagline;
-  const description = localized?.description || project.description;
-  const purpose = localized?.purpose || project.purpose;
-  const challenges = localized?.challenges || project.challenges;
-  const future = localized?.future || project.future;
+  const tagline = project[lang]?.tagline || localized?.tagline || project.tagline;
+  const description = project[lang]?.description || localized?.description || project.description;
+  const purpose = project[lang]?.purpose || localized?.purpose || project.purpose;
+  const challenges = project[lang]?.challenges || localized?.challenges || project.challenges || [];
+  const future = project[lang]?.future || localized?.future || project.future || [];
 
   return (
     <main

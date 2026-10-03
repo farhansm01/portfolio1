@@ -22,7 +22,7 @@ const translations = {
         "Programmer",
       ],
       bio: "CSE student at AIUB, Bangladesh — building full stack web apps with the MERN stack and Next.js. Passionate about clean code, good UX, and turning ideas into real products.",
-      downloadCV: "Download CV",
+      downloadCV: "View Resume",
       contactMe: "Contact Me",
     },
     about: {
@@ -76,7 +76,7 @@ const translations = {
           type: "Undergraduate",
           title: "B.Sc. in Computer Science & Engineering",
           institution: "American International University — Bangladesh (AIUB)",
-          period: "2021 — Present",
+          period: "2023 — Present",
           location: "Dhaka, Bangladesh",
           description:
             "Studying core computer science fundamentals including data structures, algorithms, software engineering, and database systems. Currently in the 8th semester with a strong focus on full stack web development.",
@@ -141,9 +141,9 @@ const translations = {
             "A full stack marketplace for buying and selling second-hand items, with Stripe-powered checkout, secure auth, and a clean listing management system.",
         },
         drift: {
-          tagline: "Car Rental Listing Platform",
+          tagline: "Second-Hand Car Marketplace",
           description:
-            "A car rental listing platform built under a tight deadline, with JWT-secured server-to-server calls and a metallic, glassmorphic UI.",
+            "A full stack marketplace for buying and selling second-hand cars built under a tight deadline, with JWT-secured server-to-server calls and a metallic, glassmorphic UI.",
         },
         nestly: {
           tagline: "AI-Powered Real Estate Platform",
@@ -252,7 +252,7 @@ const translations = {
           type: "Bachelor",
           title: "B.Sc. Informatik & Ingenieurwesen",
           institution: "American International University — Bangladesh (AIUB)",
-          period: "2021 — Heute",
+          period: "2023 — Heute",
           location: "Dhaka, Bangladesch",
           description:
             "Studium der Grundlagen der Informatik, einschließlich Datenstrukturen, Algorithmen, Software-Engineering und Datenbanksysteme. Aktuell im 8. Semester mit starkem Fokus auf Full-Stack-Webentwicklung.",
@@ -369,19 +369,21 @@ const translations = {
           ]
         },
         drift: {
-          tagline: "Autovermietungs-Plattform",
+          tagline: "Gebrauchtwagen-Marktplatz",
           description:
-            "Eine Autovermietungsplattform, entwickelt unter engem Zeitdruck, mit JWT-gesicherten Server-zu-Server-Aufrufen und einer metallischen, glasartigen Oberfläche.",
+            "Ein Full-Stack-Marktplatz zum Kaufen und Verkaufen von Gebrauchtwagen, entwickelt unter Zeitdruck mit JWT-gesicherten Server-zu-Server-Aufrufen und einer metallischen, glasartigen Oberfläche.",
+          purpose:
+            "Bietet einen leistungsstarken Marktplatz zur Verbindung von Gebrauchtwagen-Verkäufern und -Käufern mit sicherer JWT-Server-zu-Server-Authentifizierung und metallischer Glasmorphismus-Benutzeroberfläche.",
           challenges: [
             "Fixierung der BetterAuth-Version wegen Breaking Changes in Kysely unter Zeitdruck.",
             "Einrichtung der JWT-Verifizierung zwischen Next.js-Frontend und Express-Backend über ein JWKS-Endpunkt.",
             "Entwicklung des metallisch-glasartigen UI-Designs mit Tailwind."
           ],
           future: [
-            "Buchungskalender für Echtzeit-Verfügbarkeit der Fahrzeuge.",
-            "Bewertungssystem für Mieterfahrungen.",
-            "Zahlungsintegration für Kautionen und Mietbeträge.",
-            "Vermieter-Dashboard zur Verwaltung von Inseraten und Einnahmen."
+            "Probefahrten-Buchungssystem zur Vereinbarung von Terminen zwischen Käufern und Verkäufern.",
+            "Bewertungssystem für Verkäufer durch verifizierte Käufer.",
+            "Fahrzeughistorien- & Inspektionsberichte für Inserate.",
+            "Verkäufer-Dashboard zur Verfolgung von Inseratsaufrufen und Anfragen."
           ]
         },
         nestly: {
@@ -389,11 +391,11 @@ const translations = {
           description:
             "Eine Full-Stack-Immobilienplattform, auf der Nutzer Luxusimmobilien entdecken, inserieren und verwalten können, angetrieben von Google Gemini für intelligente Empfehlungen, Dokumentenrisikoprüfung und einen Live-Chat-Assistenten.",
           purpose:
-            "Revolutioniert den Kauf von Luxusimmobilien durch die Kombination von KI-Dokumentenrisikoprüfung, Gemini-gestützten Immobilienempfehlungen und sofortiger Stripe-Immobilienreservierung.",
+            "Revolutioniert das Entdecken von Luxusimmobilien durch die Kombination von KI-Dokumentenrisikoprüfung, Gemini-gestützten Empfehlungen und interaktiver Immobilienverwaltung.",
           challenges: [
             "Prompt-Engineering für Google Gemini für 3 verschiedene KI-Features (Empfehlungen, Dokumentenprüfung, Live-Chat).",
-            "Rollenbasierte Dashboards (Käufer, Verkäufer, Admins) mit unterschiedlichen Rechten.",
-            "Synchronisierung von Stripe-Zahlungsstatus, Inseratstatus und Benutzerrollen."
+            "Entwicklung eines einheitlichen Nutzer-Dashboards zur einfachen Verwaltung von Favoriten, Inseraten und KI-Chats.",
+            "Konfiguration von BetterAuth-Sitzungsdaten zusammen mit MongoDB für reibungslose Authentifizierung über Server- und Client-Komponenten."
           ],
           future: [
             "Gespeicherte Suchen mit E-Mail-Benachrichtigungen bei neuen Angeboten.",

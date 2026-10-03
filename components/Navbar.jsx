@@ -67,18 +67,22 @@ export default function Navbar() {
       "projects",
       "contact",
     ];
-    const observer = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-        }),
-      { rootMargin: "-40% 0px -55% 0px" },
-    );
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 250;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section) {
+          const top = section.offsetTop;
+          if (scrollPosition >= top) {
+            setActive(sections[i]);
+            break;
+          }
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollTo = (href) => {
@@ -149,19 +153,20 @@ export default function Navbar() {
           </motion.a>
 
           {/* Desktop links */}
-          <ul className="hidden md:flex items-center gap-1">
+          <ul className="hidden md:flex items-center gap-2 lg:gap-3">
             {navLinks.map((link) => {
               const isActive = active === link.href.replace("#", "");
               return (
                 <li key={link.href}>
                   <button
                     onClick={() => scrollTo(link.href)}
-                    className="relative px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer"
+                    className="relative px-4.5 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer flex items-center justify-center min-w-[80px]"
                     style={{
                       fontFamily: "var(--font-body)",
                       color: isActive
                         ? "var(--text-base)"
                         : "var(--text-muted)",
+                      fontWeight: isActive ? "600" : "500",
                     }}
                     onMouseEnter={(e) => {
                       if (!isActive)
@@ -179,7 +184,7 @@ export default function Navbar() {
                         style={{
                           background: "var(--nav-active-bg)",
                           border: "1px solid var(--nav-active-border)",
-                          boxShadow: "0 0 12px rgba(139,92,246,0.15)",
+                          boxShadow: "0 4px 16px rgba(139,92,246,0.18)",
                         }}
                         transition={{
                           type: "spring",
@@ -188,7 +193,7 @@ export default function Navbar() {
                         }}
                       />
                     )}
-                    <span className="relative z-10">{link.label}</span>
+                    <span className="relative z-10 px-1">{link.label}</span>
                   </button>
                 </li>
               );
@@ -200,49 +205,74 @@ export default function Navbar() {
             {mounted && (
               <motion.button
                 onClick={() => setLang(lang === "en" ? "de" : "en")}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="h-9 px-3 rounded-full flex items-center justify-center transition-all cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 aria-label="Toggle language"
                 style={{
+                  height: "36px",
+                  padding: "0 14px",
+                  borderRadius: "9999px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   background: "var(--glass-bg)",
                   border: "1px solid var(--glass-border)",
                   backdropFilter: "blur(12px)",
                   WebkitBackdropFilter: "blur(12px)",
                   boxShadow: "var(--glass-shadow)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.85rem",
-                  gap: "6px",
-                  minWidth: "68px",
+                  color: "var(--text-base)",
+                  cursor: "pointer",
+                  overflow: "hidden",
                 }}
               >
-                <span
-                  style={{
-                    opacity: lang === "en" ? 1 : 0.35,
-                    filter: lang === "en" ? "drop-shadow(0 0 4px rgba(139,92,246,0.4))" : "grayscale(50%)",
-                    transition: "all 0.2s",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <FlagGB />
-                </span>
-                <span
-                  style={{ color: "var(--text-muted)", fontSize: "0.65rem" }}
-                >
-                  /
-                </span>
-                <span
-                  style={{
-                    opacity: lang === "de" ? 1 : 0.35,
-                    filter: lang === "de" ? "drop-shadow(0 0 4px rgba(139,92,246,0.4))" : "grayscale(50%)",
-                    transition: "all 0.2s",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <FlagDE />
-                </span>
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={lang}
+                    initial={{ y: -10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 10, opacity: 0 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "7px",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {lang === "en" ? (
+                      <>
+                        <FlagDE />
+                        <span
+                          style={{
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "0.75rem",
+                            fontWeight: "600",
+                            color: "var(--text-subtle)",
+                            letterSpacing: "0.02em",
+                          }}
+                        >
+                          DE
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <FlagGB />
+                        <span
+                          style={{
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "0.75rem",
+                            fontWeight: "600",
+                            color: "var(--text-subtle)",
+                            letterSpacing: "0.02em",
+                          }}
+                        >
+                          EN
+                        </span>
+                      </>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
               </motion.button>
             )}
 

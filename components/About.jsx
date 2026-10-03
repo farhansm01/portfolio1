@@ -11,9 +11,11 @@ import {
   SiNodedotjs,
   SiReact,
   SiTailwindcss,
+  SiTypescript,
 } from "react-icons/si";
 
 const techStack = [
+  { icon: SiTypescript, name: "TypeScript", color: "#3178C6" },
   { icon: SiReact, name: "React", color: "#61DAFB" },
   { icon: SiNextdotjs, name: "Next.js", color: "#6d28d9" },
   { icon: SiNodedotjs, name: "Node.js", color: "#68A063" },
@@ -23,18 +25,10 @@ const techStack = [
 ];
 
 const cardMeta = [
-  { key: "journey", icon: HiCode, color: "#8b5cf6", from: "left" },
-  { key: "mindset", icon: HiAcademicCap, color: "#22d3ee", from: "bottom" },
-  { key: "beyond", icon: HiHeart, color: "#f472b6", from: "right" },
+  { key: "journey", icon: HiCode, color: "#8b5cf6" },
+  { key: "mindset", icon: HiAcademicCap, color: "#22d3ee" },
+  { key: "beyond", icon: HiHeart, color: "#f472b6" },
 ];
-
-const dv = {
-  left: { hidden: { opacity: 0, x: -80 }, visible: { opacity: 1, x: 0 } },
-  right: { hidden: { opacity: 0, x: 80 }, visible: { opacity: 1, x: 0 } },
-  bottom: { hidden: { opacity: 0, y: 60 }, visible: { opacity: 1, y: 0 } },
-  top: { hidden: { opacity: 0, y: -50 }, visible: { opacity: 1, y: 0 } },
-  fadeUp: { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } },
-};
 
 export default function About() {
   const { t } = useLang();
@@ -51,10 +45,9 @@ export default function About() {
       <div style={{ maxWidth: "1152px", margin: "0 auto", width: "100%" }}>
         {/* Heading */}
         <motion.div
-          variants={dv.top}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.5 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           style={{ textAlign: "center", marginBottom: "56px" }}
         >
@@ -95,11 +88,10 @@ export default function About() {
 
         {/* Bio */}
         <motion.div
-          variants={dv.fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.4 }}
-          transition={{ duration: 0.55, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
           style={{
             maxWidth: "750px",
             margin: "0 auto 56px",
@@ -134,14 +126,13 @@ export default function About() {
           className="grid grid-cols-2 md:grid-cols-4"
           style={{ gap: "16px", marginBottom: "56px" }}
         >
-          {stats.map(({ label, value }, i) => (
+          {stats.map(({ label, value }, idx) => (
             <motion.div
               key={label}
-              variants={dv.fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.4 }}
-              transition={{ duration: 0.45, delay: i * 0.08, ease: "easeOut" }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.4, delay: idx * 0.08, ease: "easeOut" }}
               whileHover={{ y: -4, transition: { duration: 0.15 } }}
               className="glass-card"
               style={{
@@ -182,20 +173,15 @@ export default function About() {
           className="grid grid-cols-1 md:grid-cols-3"
           style={{ gap: "24px", marginBottom: "56px" }}
         >
-          {cardMeta.map(({ key, icon: Icon, color, from }, i) => {
+          {cardMeta.map(({ key, icon: Icon, color }, idx) => {
             const card = t.about.cards[key];
             return (
               <motion.div
                 key={key}
-                variants={dv[from]}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.2 }}
-                transition={{
-                  duration: 0.55,
-                  delay: i * 0.08,
-                  ease: "easeOut",
-                }}
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: idx * 0.12, ease: "easeOut" }}
                 whileHover={{ y: -8, transition: { duration: 0.2 } }}
                 className="glass-card group relative overflow-hidden transition-all duration-300"
                 style={{
@@ -263,11 +249,10 @@ export default function About() {
 
         {/* Tech stack */}
         <motion.div
-          variants={dv.fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
           style={{ textAlign: "center" }}
         >
           <p
@@ -291,13 +276,13 @@ export default function About() {
               gap: "12px",
             }}
           >
-            {techStack.map(({ icon: Icon, name, color }, i) => (
+            {techStack.map(({ icon: Icon, name, color }, idx) => (
               <motion.div
                 key={name}
-                initial={{ opacity: 0, scale: 0.75 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: false, amount: 0.5 }}
-                transition={{ duration: 0.3, delay: i * 0.06, ease: "easeOut" }}
+                initial={{ opacity: 0, scale: 0.85, y: 15 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.35, delay: idx * 0.05 }}
                 whileHover={{
                   scale: 1.12,
                   y: -4,

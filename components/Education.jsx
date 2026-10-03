@@ -1,39 +1,9 @@
 "use client";
 
 import { useLang } from "@/context/LanguageContext";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { HiAcademicCap } from "react-icons/hi";
 import EducationCard from "./EducationCard";
-
-const nodeColors = ["#8b5cf6", "#22d3ee", "#f472b6"];
-
-function MotionIcon({ progress, pathRef }) {
-  const x = useTransform(progress, (p) => {
-    if (!pathRef.current) return 0;
-    const len = pathRef.current.getTotalLength();
-    return pathRef.current.getPointAtLength(p * len).x;
-  });
-  const y = useTransform(progress, (p) => {
-    if (!pathRef.current) return 0;
-    const len = pathRef.current.getTotalLength();
-    return pathRef.current.getPointAtLength(p * len).y;
-  });
-  return (
-    <motion.text
-      x={x}
-      y={y}
-      textAnchor="middle"
-      dominantBaseline="central"
-      style={{
-        fontSize: "20px",
-        userSelect: "none",
-        filter: "drop-shadow(0 0 6px rgba(139,92,246,0.9))",
-      }}
-    >
-      🎓
-    </motion.text>
-  );
-}
 
 export default function Education() {
   const { t } = useLang();
@@ -43,132 +13,58 @@ export default function Education() {
     {
       id: 1,
       type: e.undergraduate.type,
-      typeColor: "#8b5cf6",
-      typeBg: "rgba(139,92,246,0.1)",
-      typeBorder: "rgba(139,92,246,0.25)",
+      typeColor: "#a78bfa",
+      typeBg: "rgba(139,92,246,0.15)",
+      typeBorder: "rgba(139,92,246,0.35)",
       accentColor: "#8b5cf6",
       title: e.undergraduate.title,
       institution: e.undergraduate.institution,
-      institutionColor: "#8b5cf6",
+      institutionColor: "#a78bfa",
       period: e.undergraduate.period,
       location: e.undergraduate.location,
       description: e.undergraduate.description,
-      status: null,
-      icons: null,
     },
     {
       id: 2,
       type: e.hsc.type,
-      typeColor: "#22d3ee",
-      typeBg: "rgba(34,211,238,0.1)",
-      typeBorder: "rgba(34,211,238,0.25)",
+      typeColor: "#38bdf8",
+      typeBg: "rgba(34,211,238,0.15)",
+      typeBorder: "rgba(34,211,238,0.35)",
       accentColor: "#22d3ee",
       title: e.hsc.title,
       institution: e.hsc.institution,
-      institutionColor: "#22d3ee",
+      institutionColor: "#38bdf8",
       period: e.hsc.period,
       location: e.hsc.location,
-      description: null,
-      status: null,
-      icons: null,
+      description:
+        "Completed Higher Secondary Certificate (HSC) under the Science Group.",
     },
     {
       id: 3,
       type: e.ssc.type,
-      typeColor: "#f472b6",
-      typeBg: "rgba(244,114,182,0.1)",
-      typeBorder: "rgba(244,114,182,0.25)",
+      typeColor: "#fb7185",
+      typeBg: "rgba(244,114,182,0.15)",
+      typeBorder: "rgba(244,114,182,0.35)",
       accentColor: "#f472b6",
       title: e.ssc.title,
       institution: e.ssc.institution,
-      institutionColor: "#f472b6",
+      institutionColor: "#fb7185",
       period: e.ssc.period,
       location: e.ssc.location,
-      description: null,
-      status: null,
-      icons: null,
+      description:
+        "Completed Secondary School Certificate (SSC) under the Science Group.",
     },
   ];
-
-  const sectionRef = useRef(null);
-  const cardRefs = useRef([]);
-  const svgPathRef = useRef(null);
-  const [pathD, setPathD] = useState("");
-  const [svgDims, setSvgDims] = useState({ w: 0, h: 0 });
-  const [dots, setDots] = useState([]);
-  const [cardBoxes, setCardBoxes] = useState([]);
-  const [isMobile, setIsMobile] = useState(false);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start center", "end center"],
-  });
-  const pathProgress = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  useEffect(() => {
-    function measure() {
-      if (!sectionRef.current || isMobile) {
-        setPathD("");
-        return;
-      }
-      const cr = sectionRef.current.getBoundingClientRect();
-      const W = cr.width;
-      setSvgDims({ w: W, h: cr.height });
-      const boxes = cardRefs.current.map((el, i) => {
-        if (!el) return null;
-        const r = el.getBoundingClientRect();
-        const isLeft = i % 2 === 0;
-        return {
-          innerX: isLeft ? r.right - cr.left : r.left - cr.left,
-          centerY: r.top - cr.top + r.height / 2,
-          left: r.left - cr.left,
-          top: r.top - cr.top,
-          width: r.width,
-          height: r.height,
-        };
-      });
-      if (boxes.some((b) => !b)) return;
-      setDots(boxes.map((b) => ({ x: b.innerX, y: b.centerY })));
-      setCardBoxes(
-        boxes.map((b) => ({
-          left: b.left,
-          top: b.top,
-          width: b.width,
-          height: b.height,
-        })),
-      );
-      let d = `M ${boxes[0].innerX} ${boxes[0].centerY}`;
-      for (let i = 1; i < boxes.length; i++) {
-        const prev = boxes[i - 1],
-          curr = boxes[i];
-        const wallX = curr.innerX > prev.innerX ? W * 0.72 : W * 0.28;
-        d += ` L ${wallX} ${prev.centerY} L ${wallX} ${curr.centerY} L ${curr.innerX} ${curr.centerY}`;
-      }
-      setPathD(d);
-    }
-    const timer = setTimeout(measure, 120);
-    window.addEventListener("resize", measure);
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("resize", measure);
-    };
-  }, [isMobile]);
 
   return (
     <section id="education" style={{ padding: "80px 20px" }}>
       <div style={{ maxWidth: "1000px", margin: "0 auto", width: "100%" }}>
+        {/* Section Heading */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
           style={{ textAlign: "center", marginBottom: "64px" }}
         >
           <span
@@ -190,12 +86,11 @@ export default function Education() {
               fontFamily: "var(--font-display)",
               fontSize: "clamp(2rem, 5vw, 3rem)",
               color: "var(--text-base)",
+              margin: 0,
             }}
           >
             {t.education.heading}{" "}
-            <span className="gradient-text">
-              {t.education.headingHighlight}
-            </span>
+            <span className="gradient-text">{t.education.headingHighlight}</span>
           </h2>
           <div
             style={{
@@ -208,110 +103,82 @@ export default function Education() {
           />
         </motion.div>
 
-        <div
-          ref={sectionRef}
-          style={{ position: "relative", paddingBottom: "40px" }}
-        >
-          {pathD && !isMobile && (
-            <svg
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: svgDims.h,
-                pointerEvents: "none",
-                zIndex: -1,
-                overflow: "visible",
-              }}
-            >
-              <defs>
-                <mask id="edu-mask">
-                  <rect
-                    x="0"
-                    y="0"
-                    width={svgDims.w}
-                    height={svgDims.h}
-                    fill="white"
-                  />
-                  {cardBoxes.map((box, i) => (
-                    <rect
-                      key={i}
-                      x={box.left}
-                      y={box.top}
-                      width={box.width}
-                      height={box.height}
-                      rx="16"
-                      ry="16"
-                      fill="black"
-                    />
-                  ))}
-                </mask>
-              </defs>
-              <path
-                d={pathD}
-                mask="url(#edu-mask)"
-                fill="none"
-                stroke="rgba(139,92,246,0.4)"
-                strokeWidth="2"
-                strokeDasharray="8 10"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <g mask="url(#edu-mask)">
-                {dots.map((dot, i) => (
-                  <circle
-                    key={i}
-                    cx={dot.x}
-                    cy={dot.y}
-                    r="7"
-                    fill={nodeColors[i]}
-                    opacity="0.9"
-                  />
-                ))}
-              </g>
-              <g mask="url(#edu-mask)">
-                <path ref={svgPathRef} d={pathD} fill="none" stroke="none" />
-                <MotionIcon progress={pathProgress} pathRef={svgPathRef} />
-              </g>
-            </svg>
-          )}
-          <div
+        {/* Timeline Container */}
+        <div style={{ position: "relative", maxWidth: "900px", margin: "0 auto" }}>
+          {/* Vertical Timeline Stick */}
+          <motion.div
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "40px",
-              position: "relative",
-              zIndex: 1,
+              position: "absolute",
+              top: "40px",
+              bottom: "40px",
+              left: "24px",
+              width: "4px",
+              borderRadius: "9999px",
+              background: "linear-gradient(180deg, #8b5cf6 0%, #22d3ee 50%, #f472b6 100%)",
+              boxShadow: "0 0 12px rgba(139, 92, 246, 0.4)",
+              transformOrigin: "top center",
             }}
-          >
-            {educationData.map((item, index) => (
-              <div
+          />
+
+          {/* Vertical Cards Stack */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+            {educationData.map((item, idx) => (
+              <motion.div
                 key={item.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.55, delay: idx * 0.15, ease: "easeOut" }}
                 style={{
+                  position: "relative",
                   display: "flex",
-                  justifyContent: isMobile
-                    ? "center"
-                    : index % 2 === 0
-                      ? "flex-start"
-                      : "flex-end",
+                  alignItems: "center",
                 }}
               >
+                {/* Education Hat (Graduation Cap Node) centered on the timeline stick */}
                 <div
-                  ref={(el) => (cardRefs.current[index] = el)}
                   style={{
-                    width: isMobile ? "100%" : "46%",
-                    position: "relative",
+                    position: "absolute",
+                    left: "0px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    width: "52px",
+                    height: "52px",
+                    borderRadius: "50%",
+                    background: "var(--card-bg, #090918)",
+                    border: `2px solid ${item.accentColor}`,
+                    boxShadow: `0 0 20px ${item.accentColor}66`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    zIndex: 10,
                   }}
                 >
-                  <EducationCard
-                    item={item}
-                    index={index}
-                    total={educationData.length}
-                    scrollYProgress={scrollYProgress}
-                  />
+                  <HiAcademicCap style={{ color: item.accentColor, fontSize: "1.6rem" }} />
                 </div>
-              </div>
+
+                {/* Connector Line from Hat to Card */}
+                <div
+                  style={{
+                    position: "absolute",
+                    left: "52px",
+                    top: "50%",
+                    width: "24px",
+                    height: "2px",
+                    background: item.accentColor,
+                    opacity: 0.5,
+                  }}
+                />
+
+                {/* Card Container */}
+                <div style={{ marginLeft: "76px", width: "100%" }}>
+                  <EducationCard item={item} />
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>

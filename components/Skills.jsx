@@ -16,6 +16,7 @@ import {
   SiPostman,
   SiReact,
   SiTailwindcss,
+  SiTypescript,
   SiVercel,
 } from "react-icons/si";
 
@@ -23,19 +24,18 @@ const skillData = [
   {
     key: "frontend",
     accent: "#8b5cf6",
-    from: "left",
     skills: [
-      { name: "HTML5", icon: SiHtml5, color: "#E34F26" },
+      { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
       { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
       { name: "React", icon: SiReact, color: "#61DAFB" },
       { name: "Next.js", icon: SiNextdotjs, color: "#6d28d9" },
       { name: "Tailwind", icon: SiTailwindcss, color: "#38BDF8" },
+      { name: "HTML5", icon: SiHtml5, color: "#E34F26" },
     ],
   },
   {
     key: "backend",
     accent: "#34d399",
-    from: "bottom",
     skills: [
       { name: "Node.js", icon: SiNodedotjs, color: "#68A063" },
       { name: "Express", icon: SiExpress, color: "#6d28d9" },
@@ -46,7 +46,6 @@ const skillData = [
   {
     key: "tools",
     accent: "#fb7185",
-    from: "right",
     skills: [
       { name: "Git", icon: SiGit, color: "#F05032" },
       { name: "GitHub", icon: SiGithub, color: "#6d28d9" },
@@ -57,21 +56,10 @@ const skillData = [
   },
 ];
 
-const dv = {
-  left: { hidden: { opacity: 0, x: -80 }, visible: { opacity: 1, x: 0 } },
-  right: { hidden: { opacity: 0, x: 80 }, visible: { opacity: 1, x: 0 } },
-  bottom: { hidden: { opacity: 0, y: 60 }, visible: { opacity: 1, y: 0 } },
-  top: { hidden: { opacity: 0, y: -60 }, visible: { opacity: 1, y: 0 } },
-};
-
-function SkillPill({ skill, delay }) {
+function SkillPill({ skill }) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.75 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: false, amount: 0.5 }}
-      transition={{ duration: 0.3, delay, ease: "easeOut" }}
-      whileHover={{ scale: 1.1, y: -4, transition: { duration: 0.15 } }}
+      whileHover={{ scale: 1.08, y: -3, transition: { duration: 0.15 } }}
       onMouseEnter={(e) => {
         e.currentTarget.style.background = `${skill.color}18`;
         e.currentTarget.style.borderColor = `${skill.color}60`;
@@ -92,7 +80,7 @@ function SkillPill({ skill, delay }) {
         border: "1px solid var(--glass-border)",
         cursor: "default",
         userSelect: "none",
-        transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+        transition: "all 0.2s ease",
       }}
     >
       <skill.icon
@@ -121,10 +109,9 @@ export default function Skills() {
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
         {/* Heading */}
         <motion.div
-          variants={dv.top}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.5 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           style={{ textAlign: "center", marginBottom: "56px" }}
         >
@@ -171,20 +158,15 @@ export default function Skills() {
             gap: "20px",
           }}
         >
-          {skillData.map(({ key, accent, from, skills }, catIndex) => {
+          {skillData.map(({ key, accent, skills }, idx) => {
             const cat = t.skills.categories[key];
             return (
               <motion.div
                 key={key}
-                variants={dv[from]}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.2 }}
-                transition={{
-                  duration: 0.55,
-                  delay: catIndex * 0.08,
-                  ease: "easeOut",
-                }}
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.55, delay: idx * 0.15, ease: "easeOut" }}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = `${accent}60`;
@@ -199,9 +181,6 @@ export default function Skills() {
                   padding: "28px",
                   background: "var(--glass-bg)",
                   border: "1px solid var(--glass-border)",
-                  backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
-                  boxShadow: "var(--glass-shadow)",
                   position: "relative",
                   overflow: "hidden",
                   transition: "all 0.3s ease",
@@ -265,12 +244,8 @@ export default function Skills() {
 
                 {/* Pills */}
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {skills.map((skill, i) => (
-                    <SkillPill
-                      key={skill.name}
-                      skill={skill}
-                      delay={catIndex * 0.08 + i * 0.05}
-                    />
+                  {skills.map((skill) => (
+                    <SkillPill key={skill.name} skill={skill} />
                   ))}
                 </div>
               </motion.div>
