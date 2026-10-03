@@ -27,6 +27,11 @@ export const metadata = {
     default: "Farhan Sadiq — Full Stack Developer & AI Engineer",
     template: "%s | Farhan Sadiq",
   },
+  icons: {
+    icon: "/photo.jpeg",
+    shortcut: "/photo.jpeg",
+    apple: "/photo.jpeg",
+  },
   description:
     "Portfolio of Farhan Sadiq, Full Stack Web Developer & CSE Student at AIUB, Bangladesh. Specialized in Next.js, React, Node.js, AI Integration, and MERN stack.",
   keywords: [
