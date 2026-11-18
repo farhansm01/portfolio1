@@ -55,6 +55,8 @@ const translations = {
           text: "History documentaries, business rabbit holes, and asking why did this succeed? I am fascinated by how things — companies, ideas, movements — go from zero to something real.",
         },
       },
+      videoTitle: "Introduction Video",
+      videoSubtitle: "Get to know me & my background",
       coreStack: "Core Stack",
     },
     skills: {
@@ -231,6 +233,8 @@ const translations = {
           text: "Geschichtsdokumentationen, Business-Tiefgänge und die Frage: Warum war das erfolgreich? Mich fasziniert, wie Dinge — Unternehmen, Ideen, Bewegungen — von null zu etwas Realem werden.",
         },
       },
+      videoTitle: "Vorstellungsvideo",
+      videoSubtitle: "Lern mich & meinen Werdegang kennen",
       coreStack: "Kern-Stack",
     },
     skills: {

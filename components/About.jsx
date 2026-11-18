@@ -3,7 +3,7 @@
 import { useLang } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 import { HiCode } from "react-icons/hi";
-import { HiAcademicCap, HiHeart } from "react-icons/hi2";
+import { HiAcademicCap, HiHeart, HiPlay } from "react-icons/hi2";
 import {
   SiExpress,
   SiMongodb,
@@ -119,6 +119,137 @@ export default function About() {
           >
             {t.about.bio2}
           </p>
+        </motion.div>
+
+        {/* Introduction Video */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+          style={{
+            maxWidth: "820px",
+            margin: "0 auto 56px",
+            width: "100%",
+          }}
+        >
+          <div
+            className="glass-card group relative overflow-hidden transition-all duration-300"
+            style={{
+              borderRadius: "24px",
+              padding: "20px",
+              border: "1px solid var(--glass-border)",
+              boxShadow: "0 20px 40px rgba(139, 92, 246, 0.12)",
+            }}
+          >
+            {/* Ambient top light on hover */}
+            <div
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.18), transparent 70%)",
+                borderRadius: "24px",
+              }}
+            />
+
+            {/* Video Card Header */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: "16px",
+                padding: "2px 6px",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div
+                  style={{
+                    width: "34px",
+                    height: "34px",
+                    borderRadius: "10px",
+                    background: "rgba(139, 92, 246, 0.15)",
+                    border: "1px solid rgba(139, 92, 246, 0.3)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#8b5cf6",
+                  }}
+                >
+                  <HiPlay style={{ fontSize: "1.1rem", marginLeft: "2px" }} />
+                </div>
+                <div>
+                  <h3
+                    className="font-bold"
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "1.05rem",
+                      color: "var(--text-base)",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    {t.about.videoTitle}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.72rem",
+                      color: "var(--text-muted)",
+                      letterSpacing: "0.04em",
+                    }}
+                  >
+                    {t.about.videoSubtitle}
+                  </p>
+                </div>
+              </div>
+
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.7rem",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  padding: "4px 10px",
+                  borderRadius: "9999px",
+                  background: "rgba(139, 92, 246, 0.1)",
+                  color: "#8b5cf6",
+                  border: "1px solid rgba(139, 92, 246, 0.25)",
+                }}
+              >
+                1080p HD
+              </span>
+            </div>
+
+            {/* 16:9 Video Player */}
+            <div
+              className="relative w-full overflow-hidden"
+              style={{
+                borderRadius: "16px",
+                aspectRatio: "16 / 9",
+                background: "#050510",
+                boxShadow: "inset 0 0 20px rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              <video
+                controls
+                preload="metadata"
+                playsInline
+                poster="/photo.jpeg"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "16px",
+                  display: "block",
+                }}
+              >
+                <source src="/intro.mp4" type="video/mp4" />
+                <source src="/IMG_6554.mp4" type="video/mp4" />
+                <source src="/intro-video.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
         </motion.div>
 
         {/* Stats */}
